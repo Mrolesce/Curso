@@ -1,0 +1,18 @@
+package com.example.ioc;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class StringRepositoryImpl implements StringRepository {
+
+	@Override
+	public String load() {
+		return null;
+	}
+
+	@Override
+	public void save(String item) {
+
+	}
+
+}
