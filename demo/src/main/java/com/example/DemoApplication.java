@@ -53,7 +53,7 @@ public class DemoApplication implements CommandLineRunner{
 		System.out.println(rango.toString());
 		System.out.println(tonteria.dimeAlgo());
 		
-		System.out.println(tonteria != null );
+		System.out.println(tonteria != null ? tonteria.dimeAlgo() : "Tonteria nula");
 	}
 
 }
