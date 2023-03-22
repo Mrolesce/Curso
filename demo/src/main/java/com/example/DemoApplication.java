@@ -54,6 +54,8 @@ public class DemoApplication implements CommandLineRunner{
 		System.out.println(tonteria.dimeAlgo());
 		
 		System.out.println(tonteria != null ? tonteria.dimeAlgo() : "Tonteria nula");
+		
+		System.out.println("Hola git");
 	}
 
 }
