@@ -4,12 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
+import com.example.core.test.Smoke;
+import com.example.core.test.SpaceCamelCase;
+
+@TestMethodOrder(MethodOrderer.DisplayName.class)
 class CalculadoraTest {
 	
 	Calculadora calc;
@@ -21,13 +29,14 @@ class CalculadoraTest {
 	
 	@Nested
 	@DisplayName("Pruebas del método suma")
-	@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+	@DisplayNameGeneration(SpaceCamelCase.class)
 	class suma{
 		@Nested
 		class OK{
 			
+			@Smoke
 			@Test
-			void test_Suma_Positivo_Positivo() {
+			void testSumaPositivoPositivo() {
 				var calc = new Calculadora();
 				
 				var rslt = calc.suma(2, 2);
@@ -72,14 +81,24 @@ class CalculadoraTest {
 				
 				assertEquals(4, rslt);
 			}
-
+			
 			@Test
+			@Disabled //prueba desabilitada
 			void testSumaDecimale() {
 				var calc = new Calculadora();
 				
 				var rslt = calc.suma(0.1, 0.2);
 				
 				assertEquals(0.3, rslt);
+			}
+			
+			//name nombre de la prueba con los 3 valores de la prueba
+			//se ejecutan todos los tests
+			//flexible
+			@ParameterizedTest(name = "{0} + {1} = {2}")
+			@CsvSource(value = {"1,1,2", "0.1, 0.2, 0.3", "3,4,7"}) //valores de cada vuelta
+			void testSumasOK(double op1, double op2, double rslt) {
+				assertEquals(rslt, calc.suma(op1, op2));
 			}
 
 		}
@@ -91,6 +110,7 @@ class CalculadoraTest {
 	
 	@Nested
 	@DisplayName("Pruebas del método divide")
+	@DisplayNameGeneration(SpaceCamelCase.class)
 	class divide {
 		@Nested
 		class OK {
