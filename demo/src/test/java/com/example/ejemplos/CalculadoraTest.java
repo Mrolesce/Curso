@@ -1,7 +1,8 @@
 package com.example.ejemplos;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -99,6 +100,13 @@ class CalculadoraTest {
 			@CsvSource(value = {"1,1,2", "0.1, 0.2, 0.3", "3,4,7"}) //valores de cada vuelta
 			void testSumasOK(double op1, double op2, double rslt) {
 				assertEquals(rslt, calc.suma(op1, op2));
+			}
+			
+			@Test
+			void testSumaMock() {
+				Calculadora calc = mock(Calculadora.class);
+				when(calc.suma(2, 2)).thenReturn(3.0);
+				assertEquals(3, calc.suma(2, 2));
 			}
 
 		}
