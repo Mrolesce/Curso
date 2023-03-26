@@ -110,6 +110,28 @@ class GildedRoseTest {
 	    			() -> assertEquals(8, app.items[1].quality),
 	    			() -> assertEquals(0, app.items[2].quality));
 	    } 
+	    
+	    @Test
+	    void conjuredTest() {
+	    	Item[] item = new Item[] { 
+	    			new Item("Conjured Mana Cake", 3 , 5)};
+	    	GildedRose app = new GildedRose(item);
+	    	
+	    	app.updateQuality();
+	    	
+	    	assertEquals(3, app.items[0].quality);
+	    }
+	    
+	    @Test
+	    void conjuredTestSellInZero() {
+	    	Item[] item = new Item[] { 
+	    			new Item("Conjured Mana Cake", 0 , 5)};
+	    	GildedRose app = new GildedRose(item);
+	    	
+	    	app.updateQuality();
+	    	
+	    	assertEquals(1, app.items[0].quality);
+	    }
 	}
 	   
 }
