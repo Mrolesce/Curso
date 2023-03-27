@@ -25,8 +25,8 @@ class GildedRoseTest {
 	    	
 	    	assertAll("Degradacion doble",
 	    			() -> assertEquals(4, app.items[0].quality),
-	    			() -> assertEquals(4, app.items[0].quality),
-	    			() -> assertEquals(4, app.items[0].quality));
+	    			() -> assertEquals(1, app.items[1].quality),
+	    			() -> assertEquals(5, app.items[2].quality));
 	    	    	
 	    }
 	    
