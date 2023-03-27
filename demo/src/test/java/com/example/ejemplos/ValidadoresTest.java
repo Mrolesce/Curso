@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
 
 class ValidadoresTest {
 
@@ -23,7 +24,9 @@ class ValidadoresTest {
 				"45673254S",
 				"72298413Y",
 				"37613561M",
-				"89040872Y"})
+				"89040872Y",
+				"00000000T"})
+		@NullSource
 		void testNIFValidos(String dni) {
 			
 			var validador = new Validadores();
@@ -74,6 +77,14 @@ class ValidadoresTest {
 			var validador = new Validadores();
 			
 			assertFalse(validador.validarNif(dni));
+		}
+		@Test
+		void noEsNifTest() {
+			String dni = "12345678A";
+			
+			var validador = new Validadores();
+			
+			assertTrue(validador.noEsNif(dni));
 		}
 	}
 	

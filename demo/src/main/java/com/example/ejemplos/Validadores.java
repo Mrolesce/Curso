@@ -5,12 +5,10 @@ import java.util.regex.Matcher;
 
 public class Validadores {
 
-	public Validadores() {
-		
-	}
 	
 	//metodo para validarNif -> https://www.lawebdelprogramador.com/foros/Java/1582093-validar-nif.html
 	public boolean validarNif(String nif){
+		if(nif == null) return true;
         boolean correcto=false;
         Pattern pattern=Pattern.compile("(\\d{1,8})([TRWAGMYFPDXBNJZSQVHLCKEtrwagmyfpdxbnjzsqvhlcke])");
         Matcher matcher=pattern.matcher(nif);
@@ -30,5 +28,9 @@ public class Validadores {
         }
         return correcto;
     }
+	
+	public boolean noEsNif(String nif) {
+		return !validarNif(nif);
+	}
 
 }

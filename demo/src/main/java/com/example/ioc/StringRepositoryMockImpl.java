@@ -9,7 +9,7 @@ public class StringRepositoryMockImpl implements StringRepository {
 
 	@Override
 	public String load() {
-		return "Soy el StringRepositoryImpl";
+		return "Soy el doble de prueba de StringRepositoryImpl";
 	}
 
 	@Override
