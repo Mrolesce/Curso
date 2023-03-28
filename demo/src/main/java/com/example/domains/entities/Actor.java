@@ -34,7 +34,8 @@ public class Actor implements Serializable {
 	private Timestamp lastUpdate;
 
 	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="actor")
+	//eager carga los datos aunque no se usen D:
+	@OneToMany(mappedBy="actor", fetch = FetchType.LAZY)
 	private List<FilmActor> filmActors = new ArrayList<>();
 
 	public Actor() {
