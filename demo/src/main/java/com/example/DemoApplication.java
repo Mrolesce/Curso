@@ -1,5 +1,8 @@
 package com.example;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,11 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import com.example.ioc.Rango;
 import com.example.ioc.StringService;
 import com.example.ioc.UnaTonteria;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @SpringBootApplication
@@ -38,6 +44,21 @@ public class DemoApplication implements CommandLineRunner{
 	@Autowired
 	UnaTonteria tonteria;
 	
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
+	@Data @AllArgsConstructor
+	class Actor {
+		private int id;
+		private String first_name, last_name;
+	}
+	class ActorRowMapper implements RowMapper<Actor> {
+	      @Override
+	      public Actor mapRow(ResultSet rs, int rowNum) throws SQLException {
+	            return new Actor(rs.getInt("actor_id"), rs.getString("last_name"), rs.getString("first_name"));
+	      }
+	}
+	
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Aplicación arrancada");
@@ -56,6 +77,17 @@ public class DemoApplication implements CommandLineRunner{
 		System.out.println(tonteria != null ? tonteria.dimeAlgo() : "Tonteria nula");
 		
 		System.out.println("Hola git");
+		
+		var lst = jdbcTemplate.query("""
+				SELECT actor_id, first_name, last_name
+				from actor
+				""", new ActorRowMapper()
+				);
+		//lst.forEach(System.out::println);
+		jdbcTemplate.queryForList("""
+				SELECT concat(first_name, ' ', last_name)
+				from actor
+				""", String.class).forEach(System.out::println);
 	}
 
 }
