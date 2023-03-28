@@ -13,6 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import com.example.domains.contracts.repositories.ActorRepository;
+import com.example.domains.entities.Actor;
 import com.example.ioc.Rango;
 import com.example.ioc.StringService;
 import com.example.ioc.UnaTonteria;
@@ -28,66 +30,25 @@ public class DemoApplication implements CommandLineRunner{
 	}
 	
 	@Autowired
-	@Qualifier("Remoto")
-	private StringService srv;
-	
-	@Autowired
-	@Qualifier("Local")
-	private StringService srvLocal;
-	
-	@Value("${mi.valor:(Sin valor)}")
-	private String configString;
-	
-	@Autowired
-	Rango rango;
-	
-	@Autowired
-	UnaTonteria tonteria;
-	
-	@Autowired
-	JdbcTemplate jdbcTemplate;
-	
-	@Data @AllArgsConstructor
-	class Actor {
-		private int id;
-		private String first_name, last_name;
-	}
-	class ActorRowMapper implements RowMapper<Actor> {
-	      @Override
-	      public Actor mapRow(ResultSet rs, int rowNum) throws SQLException {
-	            return new Actor(rs.getInt("actor_id"), rs.getString("last_name"), rs.getString("first_name"));
-	      }
-	}
+	ActorRepository dao;
 	
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Aplicación arrancada");
+		//var actor = new Actor(0, "Pepito", "Grillo");
+		//dao.save(actor);
+//		var item = dao.findById(202);
+//		if (item.isPresent()) {
+//			var actor = item.get();
+//			actor.setFirstName("JOSEPH");
+//			actor.setLastName("GRILLON'T");
+//			dao.save(actor);
+//		}else {
+//			System.out.println("Actor no encontrado");
+//		}
+//		dao.findAll().forEach(System.out::println);
 		
-		System.out.println(srv.get(1));
-		
-		System.out.println(srvLocal.get(1));
-		
-		srv.add("Este es el remoto");
-		srvLocal.add("Este es el local");
-		
-		System.out.println(configString);
-		System.out.println(rango.toString());
-		System.out.println(tonteria.dimeAlgo());
-		
-		System.out.println(tonteria != null ? tonteria.dimeAlgo() : "Tonteria nula");
-		
-		System.out.println("Hola git");
-		
-		var lst = jdbcTemplate.query("""
-				SELECT actor_id, first_name, last_name
-				from actor
-				""", new ActorRowMapper()
-				);
-		//lst.forEach(System.out::println);
-		jdbcTemplate.queryForList("""
-				SELECT concat(first_name, ' ', last_name)
-				from actor
-				""", String.class).forEach(System.out::println);
+		dao.findTop5ByFirstNameStartingWithOrderByLastName("P")
+		.forEach(System.out::println);
 	}
 
 }
