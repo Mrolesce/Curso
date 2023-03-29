@@ -6,6 +6,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 
 /**
@@ -24,12 +27,17 @@ public class Actor implements Serializable {
 	private int actorId;
 
 	@Column(name="first_name", nullable=false, length=45)
+	@NotBlank
+	@Size(max=45, min=2)
 	private String firstName;
-
+	
 	@Column(name="last_name", nullable=false, length=45)
+	@NotBlank
+	@Size(max=45, min=2)
 	private String lastName;
 
 	@Column(name="last_update", insertable=false, updatable=false, nullable=false)
+	@PastOrPresent
 	private Timestamp lastUpdate;
 
 	//bi-directional many-to-one association to FilmActor

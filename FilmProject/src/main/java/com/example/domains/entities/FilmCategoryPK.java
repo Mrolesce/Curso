@@ -2,6 +2,7 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 /**
  * The primary key class for the film_category database table.
@@ -13,9 +14,11 @@ public class FilmCategoryPK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="film_id", insertable=false, updatable=false, unique=true, nullable=false)
+	@Size(max=5)
 	private int filmId;
 
 	@Column(name="category_id", insertable=false, updatable=false, unique=true, nullable=false)
+	@Size(max=3)
 	private byte categoryId;
 
 	public FilmCategoryPK() {

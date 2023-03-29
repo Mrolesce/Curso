@@ -2,6 +2,7 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * The primary key class for the film_actor database table.
@@ -11,11 +12,14 @@ import jakarta.persistence.*;
 public class FilmActorPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-
+	
+	
 	@Column(name="actor_id", insertable=false, updatable=false, unique=true, nullable=false)
+	@NotBlank
 	private int actorId;
 
 	@Column(name="film_id", insertable=false, updatable=false, unique=true, nullable=false)
+	@NotBlank
 	private int filmId;
 
 	public FilmActorPK() {

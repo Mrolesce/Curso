@@ -2,6 +2,8 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.sql.Timestamp;
 
 
@@ -19,6 +21,7 @@ public class FilmCategory implements Serializable {
 	private FilmCategoryPK id;
 
 	@Column(name="last_update", nullable=false)
+	@PastOrPresent
 	private Timestamp lastUpdate;
 
 	//bi-directional many-to-one association to Category
