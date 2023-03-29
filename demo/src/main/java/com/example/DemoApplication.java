@@ -5,9 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.example.domains.contracts.repositories.ActorRepository;
 import com.example.domains.entities.Actor;
+import com.example.domains.entities.dtos.ActorDTO;
+import com.example.domains.entities.dtos.ActorShort;
+import com.example.ejemplos.Item;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Validation;
@@ -58,7 +63,7 @@ public class DemoApplication implements CommandLineRunner{
 //		}else {
 //			System.out.println("Actor no encontrado");
 //		}
-		var actor = new Actor(0, "12345678Z", "ROLES");
+//		var actor = new Actor(0, "12345678Z", "ROLES");
 //		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 //		var err = validator.validate(actor);
 //		if(err.size()>0) {
@@ -66,12 +71,17 @@ public class DemoApplication implements CommandLineRunner{
 //		}else {
 //			dao.save(actor);
 //		}
-		if (actor.isInvalid()) {
-			System.out.println(actor.getErrorsMessage());
-		}else { 
-			System.out.println(actor.getFirstName() + " " + actor.getLastName());
-		}
+//		if (actor.isInvalid()) {
+//			System.out.println(actor.getErrorsMessage());
+//		}else { 
+//			System.out.println(actor.getFirstName() + " " + actor.getLastName());
+//		}
 		
+//		var rslt = dao.findAll(PageRequest.of(1, 20, Sort.by("actorId")));
+//		
+//		rslt.getContent().stream().map(item -> ActorDTO.from(item)).forEach(System.out::println);
+//		
+		dao.findAllBy(ActorDTO.class).forEach(System.out::println);
 	}
 
 }
