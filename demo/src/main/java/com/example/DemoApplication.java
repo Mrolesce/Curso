@@ -99,8 +99,11 @@ public class DemoApplication implements CommandLineRunner{
 //			
 //		}).forEach(System.out::println);
 		
-		var actor = new Actor(0, "MARC", "ROLESESES");
+		var actor = new Actor(0, "MARC", "PEPEPE");
 		srv.add(actor);
+		
+		srv.getAll().stream().forEach(System.out::println);
+		
 		
 	}
 

@@ -1,13 +1,16 @@
 package com.example.domains.entities;
 
 import java.io.Serializable;
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import com.example.domains.core.entities.EntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 
@@ -18,7 +21,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name="actor")
 @NamedQuery(name="Actor.findAll", query="SELECT a FROM Actor a")
-public class Actor implements Serializable {
+public class Actor extends EntityBase<Actor> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,11 +32,12 @@ public class Actor implements Serializable {
 	@Column(name="first_name", nullable=false, length=45)
 	@NotBlank
 	@Size(max=45, min=2)
+	//@NIF
 	private String firstName;
-	
+
 	@Column(name="last_name", nullable=false, length=45)
-	@NotBlank
 	@Size(max=45, min=2)
+	//@Pattern(regexp = "[A-Z]+", message = "Tiene que estar en mayúsculas")
 	private String lastName;
 
 	@Column(name="last_update", insertable=false, updatable=false, nullable=false)
@@ -41,11 +45,26 @@ public class Actor implements Serializable {
 	private Timestamp lastUpdate;
 
 	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="actor")
-	private List<FilmActor> filmActors;
+	//eager carga los datos aunque no se usen D:
+	@OneToMany(mappedBy="actor", fetch = FetchType.LAZY)
+	private List<FilmActor> filmActors = new ArrayList<>();
 
 	public Actor() {
 	}
+
+	public Actor(int actorId, String firstName, String lastName) {
+		super();
+		this.actorId = actorId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
+	public Actor(int actorId) {
+		super();
+		this.actorId = actorId;
+	}
+
+
 
 	public int getActorId() {
 		return this.actorId;
@@ -99,6 +118,37 @@ public class Actor implements Serializable {
 		filmActor.setActor(null);
 
 		return filmActor;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(actorId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Actor other = (Actor) obj;
+		return actorId == other.actorId;
+	}
+
+	@Override
+	public String toString() {
+		return "Actor [actorId=" + actorId + ", firstName=" + firstName + ", lastName=" + lastName + ", lastUpdate="
+				+ lastUpdate + "]";
+	}
+	
+	public void jubilate() {
+		
+	}
+	
+	public void recibePremio(String premio) {
+		
 	}
 
 }
