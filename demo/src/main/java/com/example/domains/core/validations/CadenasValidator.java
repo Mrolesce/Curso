@@ -1,13 +1,13 @@
-package com.example.ejemplos;
+package com.example.domains.core.validations;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class Validadores {
+public class CadenasValidator {
 
 	
 	//metodo para validarNif -> https://www.lawebdelprogramador.com/foros/Java/1582093-validar-nif.html
-	public boolean validarNif(String nif){
+	public static boolean isNIF(String nif){
 		if(nif == null) return true;
         boolean correcto=false;
         Pattern pattern=Pattern.compile("(\\d{1,8})([TRWAGMYFPDXBNJZSQVHLCKEtrwagmyfpdxbnjzsqvhlcke])");
@@ -30,7 +30,7 @@ public class Validadores {
     }
 	
 	public boolean noEsNif(String nif) {
-		return !validarNif(nif);
+		return !isNIF(nif);
 	}
 
 }
