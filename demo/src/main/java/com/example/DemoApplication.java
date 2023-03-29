@@ -13,6 +13,8 @@ import com.example.domains.entities.Actor;
 import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.ActorShort;
 import com.example.ejemplos.Item;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Validation;
@@ -81,7 +83,20 @@ public class DemoApplication implements CommandLineRunner{
 //		
 //		rslt.getContent().stream().map(item -> ActorDTO.from(item)).forEach(System.out::println);
 //		
-		dao.findAllBy(ActorDTO.class).forEach(System.out::println);
+//		dao.findAllBy(ActorDTO.class).forEach(System.out::println);
+		
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		dao.findAllBy(ActorDTO.class).stream().map(item -> {
+//			try {
+//				return objectMapper.writeValueAsString(item);
+//			}catch(JsonProcessingException e) {
+//				return "";
+//			}
+//			
+//		}).forEach(System.out::println);
+		
+		
+		
 	}
 
 }

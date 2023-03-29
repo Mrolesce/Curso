@@ -1,15 +1,21 @@
 package com.example.domains.entities.dtos;
 
 import com.example.domains.entities.Actor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
 
 //Data para clases mutables, Value para clasrs immutables
 @Value
 public class ActorDTO {
-
+	
+	@JsonProperty("id")
 	private int actorId;
+	
+	@JsonProperty("nombre")
 	private String firstName;
+	
+	@JsonProperty("apellidos")
 	private String lastName;
 	
 	public static ActorDTO from(Actor target) {	
