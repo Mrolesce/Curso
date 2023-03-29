@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import com.example.domains.contracts.repositories.ActorRepository;
+import com.example.domains.contracts.services.ActorService;
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.ActorShort;
@@ -27,8 +28,11 @@ public class DemoApplication implements CommandLineRunner{
 		SpringApplication.run(DemoApplication.class, args);
 	}
 	
+//	@Autowired
+//	ActorRepository dao;
+	
 	@Autowired
-	ActorRepository dao;
+	ActorService srv;
 	
 	@Override
 	@Transactional
@@ -95,7 +99,8 @@ public class DemoApplication implements CommandLineRunner{
 //			
 //		}).forEach(System.out::println);
 		
-		
+		var actor = new Actor(0, "MARC", "ROLESESES");
+		srv.add(actor);
 		
 	}
 
