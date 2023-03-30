@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.example.domains.contracts.services.ActorService;
 import com.example.domains.contracts.services.CategoryService;
 import com.example.domains.contracts.services.FilmService;
+import com.example.domains.contracts.services.LanguageService;
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.Category;
 
@@ -26,6 +27,9 @@ public class FilmProjectApplication implements CommandLineRunner{
 	
 	@Autowired
 	FilmService srv3;
+	
+	@Autowired
+	LanguageService srv4;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -49,7 +53,9 @@ public class FilmProjectApplication implements CommandLineRunner{
 //		
 //		srv2.getAll().forEach(System.out::println);
 		
-		srv3.getAll().forEach(System.out::println);
+//		srv3.getAll().forEach(System.out::println);
+		
+		srv4.getAll().forEach(System.out::println);
 		
 	}
 

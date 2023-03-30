@@ -8,6 +8,9 @@ import jakarta.validation.constraints.Size;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
+
+import com.example.domains.core.entities.EntityBase;
 
 
 /**
@@ -17,7 +20,7 @@ import java.util.List;
 @Entity
 @Table(name="language")
 @NamedQuery(name="Language.findAll", query="SELECT l FROM Language l")
-public class Language implements Serializable {
+public class Language extends EntityBase<Language> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -47,6 +50,41 @@ public class Language implements Serializable {
 	}
 	
 	
+	
+
+	public Language(@Size(max = 3) int languageId, @NotBlank @Size(max = 20) String name) {
+		super();
+		this.languageId = languageId;
+		this.name = name;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Language [languageId=" + languageId + ", lastUpdate=" + lastUpdate + ", name=" + name + "]";
+	}
+
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(languageId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Language other = (Language) obj;
+		return languageId == other.languageId;
+	}
+
+
+
 
 	public int getLanguageId() {
 		return this.languageId;
