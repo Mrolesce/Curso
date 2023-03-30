@@ -6,7 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.domains.contracts.services.ActorService;
+import com.example.domains.contracts.services.CategoryService;
 import com.example.domains.entities.Actor;
+import com.example.domains.entities.Category;
 
 @SpringBootApplication
 public class FilmProjectApplication implements CommandLineRunner{
@@ -17,6 +19,9 @@ public class FilmProjectApplication implements CommandLineRunner{
 	
 	@Autowired
 	ActorService srv;
+	
+	@Autowired
+	CategoryService srv2;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -30,6 +35,16 @@ public class FilmProjectApplication implements CommandLineRunner{
 		
 		
 		srv.getAll().stream().forEach(System.out::println);
+		
+		var category = new Category(0, "Terror");
+		
+		if(category.isInvalid())
+			System.err.println(category.getErrorsMessage());
+		else
+			srv2.add(category);
+		
+		srv2.getAll().forEach(System.out::println);
+		
 	}
 
 }

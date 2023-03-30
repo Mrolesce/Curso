@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 import com.example.domains.core.entities.EntityBase;
 
@@ -43,16 +44,37 @@ public class Category extends EntityBase<Category> implements Serializable {
 	public Category() {
 	}
 
-	public Category(int categoryId, @NotBlank @Size(max = 25, min = 2) String name, List<FilmCategory> filmCategories) {
-		super();
+	public Category(int categoryId, @NotBlank @Size(max = 25, min = 2) String name) {
 		this.categoryId = categoryId;
 		this.name = name;
-		this.filmCategories = filmCategories;
+	}
+	
+	public Category(int categoryId) {
+		this.categoryId = categoryId;
+	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoryId);
 	}
 
-	public Category(int categoryId) {
-		super();
-		this.categoryId = categoryId;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Category other = (Category) obj;
+		return categoryId == other.categoryId;
+	}
+	
+	@Override
+	public String toString() {
+		return "Category [categoryId=" + categoryId  + ", name=" + name + "]" + " lastUpdate=" + lastUpdate;
 	}
 
 	public int getCategoryId() {
