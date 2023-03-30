@@ -65,19 +65,48 @@ public class Film extends EntityBase<Film> implements Serializable {
 	private Language languageVO;
 
 	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="film", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<FilmActor> filmActors;
 
 	//bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy="film", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<FilmCategory> filmCategories;
 
 
 	public Film() {
 	}
+
+	public Film(int filmId, String description, @Size(max = 5) int length, String rating, int releaseYear,
+			@Size(max = 3) int rentalDuration, BigDecimal rentalRate, BigDecimal replacementCost, String title,
+			Language language, Language languageVO) {
+		super();
+		this.filmId = filmId;
+		this.description = description;
+		this.length = length;
+		this.rating = rating;
+		this.releaseYear = releaseYear;
+		this.rentalDuration = rentalDuration;
+		this.rentalRate = rentalRate;
+		this.replacementCost = replacementCost;
+		this.title = title;
+		this.language = language;
+		this.languageVO = languageVO;
+	}
 	
 	
-	
+
+	@Override
+	public String toString() {
+		return "Film [filmId=" + filmId + ", description=" + description + ", lastUpdate=" + lastUpdate + ", length="
+				+ length + ", rating=" + rating + ", releaseYear=" + releaseYear + ", rentalDuration=" + rentalDuration
+				+ ", rentalRate=" + rentalRate + ", replacementCost=" + replacementCost + ", title=" + title
+				+ ", language=" + language + ", languageVO=" + languageVO + "]";
+	}
+
+	public Film(int filmId) {
+		super();
+		this.filmId = filmId;
+	}
 
 	public int getFilmId() {
 		return this.filmId;
