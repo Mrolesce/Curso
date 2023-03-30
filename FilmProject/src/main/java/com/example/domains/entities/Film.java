@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.example.domains.core.entities.EntityBase;
+
 
 /**
  * The persistent class for the film database table.
@@ -16,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name="film")
 @NamedQuery(name="Film.findAll", query="SELECT f FROM Film f")
-public class Film implements Serializable {
+public class Film extends EntityBase<Film> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -37,10 +39,11 @@ public class Film implements Serializable {
 	private String rating;
 
 	@Column(name="release_year")
-	private Short releaseYear;
+	private int releaseYear;
 
 	@Column(name="rental_duration", nullable=false)
-	private byte rentalDuration;
+	@Size(max=3)
+	private int rentalDuration;
 
 	@Column(name="rental_rate", nullable=false, precision=10, scale=2)
 	private BigDecimal rentalRate;
@@ -62,16 +65,19 @@ public class Film implements Serializable {
 	private Language languageVO;
 
 	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="film")
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL)
 	private List<FilmActor> filmActors;
 
 	//bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy="film")
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL)
 	private List<FilmCategory> filmCategories;
 
 
 	public Film() {
 	}
+	
+	
+	
 
 	public int getFilmId() {
 		return this.filmId;
@@ -113,7 +119,7 @@ public class Film implements Serializable {
 		this.rating = rating;
 	}
 
-	public Short getReleaseYear() {
+	public int getReleaseYear() {
 		return this.releaseYear;
 	}
 
@@ -121,7 +127,7 @@ public class Film implements Serializable {
 		this.releaseYear = releaseYear;
 	}
 
-	public byte getRentalDuration() {
+	public int getRentalDuration() {
 		return this.rentalDuration;
 	}
 

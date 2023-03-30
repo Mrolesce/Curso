@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.example.domains.core.entities.EntityBase;
+
 
 /**
  * The persistent class for the category database table.
@@ -17,7 +19,7 @@ import java.util.List;
 @Entity
 @Table(name="category")
 @NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
-public class Category implements Serializable {
+public class Category extends EntityBase<Category> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -39,6 +41,18 @@ public class Category implements Serializable {
 	private List<FilmCategory> filmCategories;
 
 	public Category() {
+	}
+
+	public Category(int categoryId, @NotBlank @Size(max = 25, min = 2) String name, List<FilmCategory> filmCategories) {
+		super();
+		this.categoryId = categoryId;
+		this.name = name;
+		this.filmCategories = filmCategories;
+	}
+
+	public Category(int categoryId) {
+		super();
+		this.categoryId = categoryId;
 	}
 
 	public int getCategoryId() {
