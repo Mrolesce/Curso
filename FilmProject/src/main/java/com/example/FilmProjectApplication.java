@@ -37,7 +37,6 @@ public class FilmProjectApplication implements CommandLineRunner {
 //		peli.addActor(3);
 //		peli.addCategory(2);
 //		peli.addCategory(4);
-		srv.deleteById(1004);
 //		System.out.println(peli.getErrorsMessage());
 //		peli = srv.add(peli);
 //		System.out.println(peli.getFilmId());
