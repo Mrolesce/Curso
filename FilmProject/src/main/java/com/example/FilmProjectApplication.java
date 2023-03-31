@@ -1,20 +1,27 @@
 package com.example;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.applications.services.CatalogoService;
 import com.example.domains.contracts.services.FilmService;
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.Film;
 import com.example.domains.entities.Film.Rating;
 
 import jakarta.transaction.Transactional;
+import lombok.experimental.var;
 
 import com.example.domains.entities.Language;
+import com.example.domains.entities.dtos.NovedadesDTO;
 
 @SpringBootApplication
 public class FilmProjectApplication implements CommandLineRunner {
@@ -23,14 +30,17 @@ public class FilmProjectApplication implements CommandLineRunner {
 		SpringApplication.run(FilmProjectApplication.class, args);
 	}
 
-//	@Autowired
-//	FilmService srv;
+	@Autowired
+	FilmService srv;
+	
+	@Autowired
+	CatalogoService catSrv;
 	
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
 		System.out.println("------------------> Aplicacion iniciada");
-		var peli = new Film("Hola mundo 2", new Language(2), (byte)1, new BigDecimal(10.0), 1, new BigDecimal(10.0));
+//		var peli = new Film("Hola mundo 2", new Language(2), (byte)1, new BigDecimal(10.0), 1, new BigDecimal(10.0));
 //		peli.setRating(Rating.ADULTS_ONLY);
 //		peli.addActor(1);
 //		peli.addActor(2);
@@ -49,6 +59,9 @@ public class FilmProjectApplication implements CommandLineRunner {
 //		peli.setTitle("Adios mundo");
 //		srv.modify(peli);
 //		srv.deleteById(1001);
+
+//		var novedades = 
+		
 	}
 
 }
