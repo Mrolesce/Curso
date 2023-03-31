@@ -40,7 +40,7 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	//@Pattern(regexp = "[A-Z]+", message = "Tiene que estar en mayúsculas")
 	private String lastName;
 
-	@Column(name="last_update", insertable=false, updatable=false, nullable=false)
+	@Column(name="last_update", insertable=false, updatable=false, nullable=true)
 	@PastOrPresent
 	private Timestamp lastUpdate;
 

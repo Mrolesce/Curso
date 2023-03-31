@@ -23,8 +23,8 @@ public class FilmProjectApplication implements CommandLineRunner {
 		SpringApplication.run(FilmProjectApplication.class, args);
 	}
 
-	@Autowired
-	FilmService srv;
+//	@Autowired
+//	FilmService srv;
 	
 	@Override
 	@Transactional
