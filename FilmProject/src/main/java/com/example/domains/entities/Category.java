@@ -54,6 +54,12 @@ public class Category extends EntityBase<Category> implements Serializable {
 		this.categoryId = categoryId;
 	}
 
+	public Category(int categoryId, @NotBlank @Size(max = 25) String name) {
+		super();
+		this.categoryId = categoryId;
+		this.name = name;
+	}
+
 	public int getCategoryId() {
 		return this.categoryId;
 	}
