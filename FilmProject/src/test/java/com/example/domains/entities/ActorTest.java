@@ -32,8 +32,19 @@ class ActorTest {
 				
 				
 		})
-		void testIsValid(String valor, String error) {
+		void firstNameIsInvalid(String valor, String error) {
 			var actor = new Actor(0, valor, "Grillo");
+			assertTrue(actor.isInvalid());
+			assertEquals(error, actor.getErrorsMessage());
+		}
+		
+		@ParameterizedTest
+		@CsvSource(value= {
+				"'','ERRORES: lastName: size must be between 2 and 45'",
+				"' ','ERRORES: lastName: size must be between 2 and 45'",				
+		})
+		void lastNameIsInvalid(String valor, String error) {
+			var actor = new Actor(0, "Alex", valor);
 			assertTrue(actor.isInvalid());
 			assertEquals(error, actor.getErrorsMessage());
 		}
