@@ -31,7 +31,7 @@ class LanguageTest {
 				"'','ERRORES: name: must not be blank'",
 				"' ','ERRORES: name: must not be blank'",				
 		})
-		void validLanguageTest(String value, String errors) {
+		void invalidLanguageTest(String value, String errors) {
 			var language = new Language(0, value);
 			
 			assertTrue(language.isInvalid());
