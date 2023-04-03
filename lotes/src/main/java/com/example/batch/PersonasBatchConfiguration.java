@@ -47,4 +47,16 @@ public class PersonasBatchConfiguration {
 					}})
 				.build();
 	}
+	
+	@Autowired
+	public PersonaItemProcessor personaItemProcessor;
+	
+	@Bean
+	public JdbcBatchItemWriter<Persona> personaDBItemWriter(DataSource dataSource) {
+		return new JdbcBatchItemWriterBuilder<Persona>()
+				.itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+				.sql("INSERT INTO personas VALUES (:id,:nombre,:correo,:ip)")
+				.dataSource(dataSource)
+				.build();
+	}
 }
