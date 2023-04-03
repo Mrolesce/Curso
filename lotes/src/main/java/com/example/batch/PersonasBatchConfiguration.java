@@ -40,17 +40,16 @@ public class PersonasBatchConfiguration {
 		return new FlatFileItemReaderBuilder<PersonaDTO>().name("personaCSVItemReader")
 				.resource(new ClassPathResource(fname))
 				.linesToSkip(1)
-				.delimited()//delimitador por comas por defecto
-				.names(new String[] { "id", "nombre", "apellidos", "correo", "sexo", "ip" })//nombres de las columnas, el nombre me lo invento
+				.delimited()
+				.names(new String[] { "id", "nombre", "apellidos", "correo", "sexo", "ip" })
 				.fieldSetMapper(new BeanWrapperFieldSetMapper<PersonaDTO>() { {
 						setTargetType(PersonaDTO.class);
 					}})
 				.build();
 	}
-	
 	@Autowired
 	public PersonaItemProcessor personaItemProcessor;
-	
+
 	@Bean
 	public JdbcBatchItemWriter<Persona> personaDBItemWriter(DataSource dataSource) {
 		return new JdbcBatchItemWriterBuilder<Persona>()
@@ -70,14 +69,7 @@ public class PersonasBatchConfiguration {
 				.build();
 	}
 	
-//	@Bean
-//	public Job personasJob(PersonasJobListener listener, Step importCSV2DBStep1) {
-//		return new JobBuilder("personasJob", jobRepository)
-//				.incrementer(new RunIdIncrementer())
-//				.listener(listener)
-//				.start(importCSV2DBStep1)
-//				.build();
-//	}
+	// DB a CSV
 	
 	@Bean
 	JdbcCursorItemReader<Persona> personaDBItemReader(DataSource dataSource) {
@@ -86,7 +78,7 @@ public class PersonasBatchConfiguration {
 				.rowMapper(new BeanPropertyRowMapper<>(Persona.class))
 				.build();
 	}
-	
+
 	@Bean
 	public FlatFileItemWriter<Persona> personaCSVItemWriter() {
 		return new FlatFileItemWriterBuilder<Persona>().name("personaCSVItemWriter")
@@ -111,18 +103,33 @@ public class PersonasBatchConfiguration {
 				.writer(personaCSVItemWriter())
 				.build();
 	}
-	
+
+	// Tasklet
 	@Bean
-	public Job personasJob(PersonasJobListener listener, Step importCSV2DBStep1,
-	Step exportDB2CSVStep) {
-		return new JobBuilder("personasJob", jobRepository)
-				.incrementer(new RunIdIncrementer())
-				.listener(listener)
-				.start(importCSV2DBStep1)
-				.next(exportDB2CSVStep)
-				.build();
+	public FTPLoadTasklet ftpLoadTasklet(@Value("${input.dir.name:./ftp}") String dir) {
+		FTPLoadTasklet tasklet = new FTPLoadTasklet();
+		tasklet.setDirectoryResource(new FileSystemResource(dir));
+		return tasklet;
+	}
+
+	@Bean
+	public Step copyFilesInDir(FTPLoadTasklet ftpLoadTasklet) {
+	        return new StepBuilder("copyFilesInDir", jobRepository)
+	            .tasklet(ftpLoadTasklet, transactionManager)
+	            .build();
 	}
 
 
+	@Bean
+	public Job personasJob(PersonasJobListener listener, Step importCSV2DBStep1, 
+			Step exportDB2CSVStep, Step copyFilesInDir) {
+		return new JobBuilder("personasJob", jobRepository)
+				.incrementer(new RunIdIncrementer())
+				.listener(listener)
+				.start(copyFilesInDir)
+				.next(importCSV2DBStep1)
+				.next(exportDB2CSVStep)
+				.build();
+	}
 
 }
