@@ -1,7 +1,7 @@
 package com.example.domains.contracts.services;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -73,7 +72,7 @@ class ActorServiceImplTest {
 		when(dao.save(actor)).thenReturn(actor);
 		
 		var rslt = srv.modify(actor);
-		verify(dao).existsById(1);
+		verify(dao, times(1)).existsById(1);
 		assertEquals(actor, rslt);
 	}
 	@Test
@@ -81,10 +80,9 @@ class ActorServiceImplTest {
 		
 		var actor = new Actor(0, "Pepito", "GRILLO");
 		
-		srv.deleteById(0);
+		srv.deleteById(actor.getActorId());
 		
-		verify(dao).deleteById(0);
-		
+		verify(dao, times(1)).deleteById(0);	
 	}
 
 }
