@@ -17,6 +17,8 @@ import com.example.domains.entities.Language;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+import io.micrometer.common.lang.NonNull;
+
 @Service
 public class LanguageServiceImpl implements LanguageService{
 
@@ -97,6 +99,11 @@ public class LanguageServiceImpl implements LanguageService{
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
 		
+	}
+	
+	@Override
+	public List<Language> novedades(@NonNull Timestamp fecha) {
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
 
 	

@@ -1,5 +1,6 @@
 package com.example.domains.services;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,8 @@ import com.example.domains.contracts.services.ActorService;
 import com.example.domains.entities.Actor;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
+
+import io.micrometer.common.lang.NonNull;
 
 @Service
 public class ActorServiceImpl implements ActorService{
@@ -95,6 +98,11 @@ public class ActorServiceImpl implements ActorService{
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
 		
+	}
+	
+	@Override
+	public List<Actor> novedades(@NonNull Timestamp fecha) {
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
 	
 	
