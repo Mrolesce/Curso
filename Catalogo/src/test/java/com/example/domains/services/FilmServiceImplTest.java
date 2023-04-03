@@ -1,9 +1,11 @@
 package com.example.domains.services;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import com.example.domains.entities.Film;
 import com.example.domains.entities.Language;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
+import com.example.exceptions.NotFoundException;
 
 @DataJpaTest
 @ComponentScan(basePackages = "com.example")
@@ -44,13 +47,24 @@ class FilmServiceImplTest {
 	}
 
 	@Test
-	void testModify() {
-		fail("Not yet implemented");
+	void testModify() throws NotFoundException, InvalidDataException {
+		var film = new Film("Hola mundo", new Language(2), (byte)1, new BigDecimal(10.0), 1, new BigDecimal(10.0));
+		
+		when(dao.findById(film.getFilmId())).thenReturn(Optional.of(film));
+		when(dao.save(film)).thenReturn(film);
+		
+		var rslt = srv.modify(film);
+		
+		assertEquals(film, rslt);
 	}
 
 	@Test
-	void testDelete() {
-		fail("Not yet implemented");
+	void testDelete() throws InvalidDataException {
+		var film = new Film("Hola mundo", new Language(2), (byte)1, new BigDecimal(10.0), 1, new BigDecimal(10.0));
+		
+		srv.delete(film);
+		
+		verify(dao).deleteById(film.getFilmId());
 	}
 
 }
