@@ -14,7 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DuplicateKeyException;
 
 import com.example.domains.contracts.repositories.CategoryRepository;
-import com.example.domains.entities.Actor;
 import com.example.domains.entities.Category;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
