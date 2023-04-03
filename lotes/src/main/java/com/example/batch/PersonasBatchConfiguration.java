@@ -35,4 +35,16 @@ public class PersonasBatchConfiguration {
 	JobRepository jobRepository;
 	@Autowired
 	PlatformTransactionManager transactionManager;
+	
+	public FlatFileItemReader<PersonaDTO> personaCSVItemReader(String fname) {
+		return new FlatFileItemReaderBuilder<PersonaDTO>().name("personaCSVItemReader")
+				.resource(new ClassPathResource(fname))
+				.linesToSkip(1)
+				.delimited()//delimitador por comas por defecto
+				.names(new String[] { "id", "nombre", "apellidos", "correo", "sexo", "ip" })//nombres de las columnas, el nombre me lo invento
+				.fieldSetMapper(new BeanWrapperFieldSetMapper<PersonaDTO>() { {
+						setTargetType(PersonaDTO.class);
+					}})
+				.build();
+	}
 }
