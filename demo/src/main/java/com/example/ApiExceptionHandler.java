@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.Serializable;
 
+import javax.management.InvalidApplicationException;
+
 import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
@@ -58,9 +60,9 @@ public class ApiExceptionHandler {
     }
     
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({ BadRequestException.class })
+    @ExceptionHandler({ InvalidApplicationException.class })
     @ResponseBody
     public ErrorMessage invalidData(Exception exception) {
-        return new ErrorMessage(exception.getMessage(), "");
+    	return new ErrorMessage("Invalid Data.", exception.getMessage());
     }
 }
