@@ -5,6 +5,7 @@ target/**
 *.ear
 *.class
 kk/**
+rickroll/**
 
 # eclipse specific
 *.pydevproject
