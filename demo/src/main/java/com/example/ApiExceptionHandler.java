@@ -14,8 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.Serializable;
 
-import javax.management.InvalidApplicationException;
-
 import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
