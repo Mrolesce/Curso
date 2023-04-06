@@ -1,9 +1,9 @@
 package com.example;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 import org.springframework.http.HttpStatus;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ApiExceptionHandler {
 	public static class ErrorMessage implements Serializable {
 		private static final long serialVersionUID = 1L;
