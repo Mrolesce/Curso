@@ -55,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public Optional<Category> getOne(Integer id) {
-		return getOne(id);
+		return dao.findById(id);
 	}
 
 	@Override
