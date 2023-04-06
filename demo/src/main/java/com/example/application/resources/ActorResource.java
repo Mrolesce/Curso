@@ -48,8 +48,8 @@ public class ActorResource {
 	}
 	
 	@GetMapping(params = "page")
-	public Page<ActorShort> getAll(Pageable pageable) {
-		return srv.getByProjection(pageable, ActorShort.class);
+	public Page<ActorDTO> getAll(Pageable pageable) {
+		return srv.getByProjection(pageable, ActorDTO.class);
 	}
 
 	@GetMapping(path = "/{id:\\d+}")//expresión genérica
