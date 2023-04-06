@@ -58,7 +58,7 @@ public class LanguageServiceImpl implements LanguageService{
 
 	@Override
 	public Optional<Language> getOne(Integer id) {
-		return getOne(id);
+		return dao.findById(id);
 	}
 
 	@Override
