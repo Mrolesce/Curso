@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Size;
 import com.example.domains.core.entities.EntityBase;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -81,49 +82,60 @@ public class Film extends EntityBase<Film> implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="film_id")
+	@JsonProperty("id")
 	private int filmId;
 
 	@Lob
+	@JsonProperty("description")
 	private String description;
 
 	@Column(name="last_update", insertable = false, updatable = false)
+	@JsonIgnore
 	private Timestamp lastUpdate;
 
 	@Positive
+	@JsonProperty("length")
 	private Integer length;
 
 	@Convert(converter = RatingConverter.class)
+	@JsonProperty("rating")
 	private Rating rating;
 
 	//@Temporal(TemporalType.DATE)
 	@Column(name="release_year")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy")
 	@Min(1895)
+	@JsonProperty("releaseYear")
 	private Short releaseYear;
 
 	@Column(name="rental_duration")
 	@Positive
+	@JsonProperty("rentalDuration")
 	private Byte rentalDuration;
 
 	@Column(name="rental_rate")
 	@Positive
 	@DecimalMin(value = "0.0", inclusive = false)
     @Digits(integer=2, fraction=2)
+	@JsonProperty("rentalRate")
 	private BigDecimal rentalRate;
 
 	@Column(name="replacement_cost")
 	@DecimalMin(value = "0.0", inclusive = false)
     @Digits(integer=3, fraction=2)
+	@JsonProperty("replacementCost")
 	private BigDecimal replacementCost;
 
 	@NotBlank
 	@Size(max = 128)
+	@JsonProperty("title")
 	private String title;
 
 	//bi-directional many-to-one association to Language
 	@ManyToOne
 	@JoinColumn(name="language_id")
 	@NotNull
+	@JsonProperty("language")
 	private Language language;
 
 	//bi-directional many-to-one association to Language
@@ -181,6 +193,30 @@ public class Film extends EntityBase<Film> implements Serializable {
 		this.rentalRate = rentalRate;
 		this.length = length;
 		this.replacementCost = replacementCost;
+	}
+	
+	
+
+	public Film(int filmId, String description, @Positive Integer length, Rating rating, @Min(1895) Short releaseYear,
+			@Positive Byte rentalDuration,
+			@Positive @DecimalMin(value = "0.0", inclusive = false) @Digits(integer = 2, fraction = 2) BigDecimal rentalRate,
+			@DecimalMin(value = "0.0", inclusive = false) @Digits(integer = 3, fraction = 2) BigDecimal replacementCost,
+			@NotBlank @Size(max = 128) String title, @NotNull Language language, Language languageVO,
+			List<FilmActor> filmActors, List<FilmCategory> filmCategories) {
+		super();
+		this.filmId = filmId;
+		this.description = description;
+		this.length = length;
+		this.rating = rating;
+		this.releaseYear = releaseYear;
+		this.rentalDuration = rentalDuration;
+		this.rentalRate = rentalRate;
+		this.replacementCost = replacementCost;
+		this.title = title;
+		this.language = language;
+		this.languageVO = languageVO;
+		this.filmActors = filmActors;
+		this.filmCategories = filmCategories;
 	}
 
 	public int getFilmId() {

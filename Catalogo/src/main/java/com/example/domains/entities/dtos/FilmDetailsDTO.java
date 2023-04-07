@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.domains.entities.Film;
+import com.example.domains.entities.Language;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Value;
@@ -44,4 +45,21 @@ public class FilmDetailsDTO {
 				source.getCategories().stream().map(item -> item.getName()).sorted().toList()
 				);
 	}
+	
+//	public static Film from(FilmDetailsDTO source) {
+//		return new Film(
+//				source.getDescription(),
+//				source.getLength(),
+//				source.getRating(),
+//				source.getReleaseYear(),
+//				source.getRentalDuration(),
+//				source.getRentalRate(),
+//				source.getReplacementCost(),
+//				source.getTitle(),
+//				source.getLanguage(),
+//				source.getLanguageVO(),
+//				source.getActors(),
+//				source.getCategories()
+//				);
+//	}
 }
