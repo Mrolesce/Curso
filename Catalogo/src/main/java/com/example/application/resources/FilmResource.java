@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.FilmService;
+import com.example.domains.entities.Category;
 import com.example.domains.entities.Film;
 import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.FilmDTO;
@@ -47,6 +50,11 @@ public class FilmResource {
 		return srv.getByProjection(FilmShortDTO.class);
 	}
 	
+	@GetMapping(params = "page")
+	public Page<FilmShortDTO> getAll(Pageable pageable) {
+		return srv.getByProjection(pageable, FilmShortDTO.class);
+	}
+	
 	@GetMapping(path = "/{id:\\d+}")//expresión genérica
 	public FilmDTO getOne(@PathVariable int id) throws NotFoundException {
 		var item = srv.getOne(id);
@@ -55,6 +63,7 @@ public class FilmResource {
 		return FilmDTO.from(item.get());
 	}
 	
+	//ruta que devuelve los detalles de la pelicula, en actores y categorias devuelve las ids de dichos actores y categorias
 	@GetMapping(path = "/{id:\\d+}/details")//expresión genérica
 	public FilmEditDTO getOneDetailed(@PathVariable int id) throws NotFoundException {
 		var item = srv.getOne(id);
