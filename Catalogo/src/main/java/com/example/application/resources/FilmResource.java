@@ -40,9 +40,6 @@ public class FilmResource {
 	@Autowired
 	FilmService srv;
 	
-	@Autowired
-	Validator validator;
-	
 	@GetMapping
 	public List<FilmShortDTO> getAll(@RequestParam(required = false) String sort) {
 		if(sort != null)

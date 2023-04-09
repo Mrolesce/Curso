@@ -1,4 +1,4 @@
-package com.example.domains.contracts.services;
+package com.example.domains.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;

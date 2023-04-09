@@ -23,7 +23,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.CategoryService;
 import com.example.domains.entities.Category;
-import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.ElementoDTO;
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
@@ -69,6 +68,11 @@ public class CategoryResource {
 		if(item.isEmpty())
 			throw new NotFoundException();
 		return item.get();
+	}
+	
+	@GetMapping(params = "page")
+	public Page<Category> getAll(Pageable pageable) {
+		return srv.getByProjection(pageable, Category.class);
 	}
 	
 	@GetMapping(path = "/{id}/pelis")

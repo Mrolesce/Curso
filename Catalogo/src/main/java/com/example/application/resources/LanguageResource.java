@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.LanguageService;
-import com.example.domains.entities.Category;
 import com.example.domains.entities.Language;
 import com.example.domains.entities.dtos.ElementoDTO;
 import com.example.exceptions.BadRequestException;
