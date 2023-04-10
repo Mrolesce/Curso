@@ -151,6 +151,20 @@ class LanguageResourceTest {
 				.andExpect(jsonPath("$.title").value("Not found"))
 		        .andDo(print());
 		}
+		
+		@Test
+		void noBodyTest() throws Exception {
+			mockMvc.perform(post("/api/lenguajes/v1"))
+				.andExpect(status().isBadRequest())
+		        .andDo(print());
+		}
+		
+		@Test
+		void invalidRouteTest() throws Exception {
+			mockMvc.perform(get("/hola/que/tal"))
+				.andExpect(status().isNotFound())
+		        .andDo(print());
+		}
 	}
 
 }
