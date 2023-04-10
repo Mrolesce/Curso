@@ -1,5 +1,7 @@
 package com.example.application.resources;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -132,6 +134,8 @@ class LanguageResourceTest {
 		void testDelete() throws Exception {
 			mockMvc.perform(delete("/api/lenguajes/v1/{id}", 1))
 	        		.andExpect(status().isNoContent());
+			
+			verify(srv, times(1)).deleteById(1);
 		}
 	}
 	

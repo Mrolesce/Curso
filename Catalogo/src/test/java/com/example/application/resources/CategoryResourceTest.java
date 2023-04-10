@@ -157,6 +157,9 @@ class CategoryResourceTest {
 		void testDelete() throws Exception {
 			mockMvc.perform(delete("/api/categorias/v1/{id}", 1))
 	        		.andExpect(status().isNoContent());
+			
+			verify(srv, times(1)).deleteById(1);
+
 		}
 	}
 	

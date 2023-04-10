@@ -1,7 +1,10 @@
 package com.example.application.resources;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -158,6 +161,14 @@ class FilmResourceTest {
 					.content(objectMapper.writeValueAsString(film))
 					)
 				.andExpect(status().isNoContent());
+		}
+		
+		@Test
+		void testDelete() throws Exception {
+			mockMvc.perform(delete("/api/films/v1/{id}", 1))
+	        		.andExpect(status().isNoContent());
+			
+			verify(srv, times(1)).deleteById(1);
 		}
 		
 	}
