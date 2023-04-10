@@ -85,11 +85,11 @@ public class ActorResource {
 			throw new BadRequestException("No coinciden los identificadores");
 		srv.modify(ActorDTO.from(item));
 	}
-
-	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable int id) {
-		srv.deleteById(id);
-	}
+//
+//	@DeleteMapping("/{id}")
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+//	public void delete(@PathVariable int id) {
+//		srv.deleteById(id);
+//	}
 
 }
