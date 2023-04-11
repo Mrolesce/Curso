@@ -42,7 +42,7 @@ public class Category extends EntityBase<Category> implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy="category")
+	@OneToMany(mappedBy="category", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<FilmCategory> filmCategories;
 
