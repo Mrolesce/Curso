@@ -3,7 +3,6 @@ package com.example.domains.services;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,12 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.domains.contracts.repositories.FilmRepository;
 import com.example.domains.contracts.services.FilmService;
-import com.example.domains.entities.Actor;
-import com.example.domains.entities.Category;
 import com.example.domains.entities.Film;
-import com.example.domains.entities.FilmActor;
-import com.example.domains.entities.FilmCategory;
-import com.example.domains.entities.Language;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;

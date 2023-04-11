@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.FilmService;
-import com.example.domains.entities.Category;
-import com.example.domains.entities.Film;
-import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.FilmDTO;
 import com.example.domains.entities.dtos.FilmEditDTO;
 import com.example.domains.entities.dtos.FilmShortDTO;
@@ -34,7 +31,6 @@ import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 import jakarta.validation.Valid;
-import jakarta.validation.Validator;
 
 @RestController
 @RequestMapping(path = {"/api/films/v1", "/api/films"})

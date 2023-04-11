@@ -2,10 +2,8 @@ package com.example.domains.entities.dtos;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.example.domains.entities.Film;
-import com.example.domains.entities.Language;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Value;
