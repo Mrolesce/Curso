@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 
 import jakarta.transaction.Transactional;
 
-
 @SpringBootApplication
 public class FilmProjectApplication implements CommandLineRunner {
 
