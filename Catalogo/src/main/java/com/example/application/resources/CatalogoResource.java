@@ -1,7 +1,9 @@
 package com.example.application.resources;
 
 import java.sql.*;
+import java.time.Instant;
 
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,9 +52,12 @@ public class CatalogoResource {
 		return ResponseEntity.ok().header("Content-Type", "application/hal+json").body(new CatalogoResources());
 	}
 	
-	@GetMapping(path = "/novedades")
-	public NovedadesDTO novedades(@RequestParam(required = false) Timestamp time) {
-		return srv.novedades(time);
+	@GetMapping(path = "/novedades/v1")
+	public NovedadesDTO novedades(@RequestParam(required = false, defaultValue = "2021-01-01 00:00:00") Timestamp fecha) {
+		// Timestamp fecha = Timestamp.valueOf("2019-01-01 00:00:00");
+		if(fecha == null)
+			fecha = Timestamp.from(Instant.now().minusSeconds(36000));
+		return srv.novedades(fecha);
 	}
 
 }
