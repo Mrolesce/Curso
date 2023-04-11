@@ -29,6 +29,7 @@ import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -47,6 +48,7 @@ public class ActorResource {
 		return srv.getByProjection(ActorShort.class);
 	}
 	
+	@Hidden
 	@GetMapping(params = "page")
 	public Page<ActorDTO> getAll(Pageable pageable) {
 		return srv.getByProjection(pageable, ActorDTO.class);
