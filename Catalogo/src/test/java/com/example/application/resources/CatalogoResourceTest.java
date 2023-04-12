@@ -53,13 +53,15 @@ class CatalogoResourceTest {
 		
 		when(srv.novedades(fecha)).thenReturn(news);
 		
-		mockMvc.perform(get("/api/catalogo/v1/novedades").param("time", fecha.toString()))
+		var result = mockMvc.perform(get("/api/catalogo/v1/novedades/v1").param("fecha", fecha.toString()))
 			.andExpect(status().isOk())
-			//.andExpect(jsonPath("$.films").isArray())
+			.andExpect(jsonPath("$.films").isArray())
 			.andExpect(jsonPath("$.actors").isArray())
 			.andExpect(jsonPath("$.categories").isArray())
 			.andExpect(jsonPath("$.languages").isArray())
-		    .andDo(print());
+		    .andDo(print()).andReturn();
+		
+		System.out.println(result.getResponse().getContentAsString());
 	}
 
 }
