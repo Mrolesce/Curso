@@ -2,8 +2,6 @@ package com.example.ejemplos;
 
 import java.util.Optional;
 
-import com.example.exceptions.ArgumentoInvalidoException;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,7 +19,7 @@ public class Persona {
 	
 	public Persona(int id, String nombre) {
 		this.id = id;
-		this.nombre = nombre;
+		setNombre(nombre);
 	}
 
 	public int getId() {
@@ -35,7 +33,7 @@ public class Persona {
 	public String getNombre() {
 		return nombre;
 	}
-	//"".equals evita que devuelva nulo
+
 	public void setNombre(String nombre) {
 		if(nombre == null || "".equals(nombre) || nombre.length() < 2) throw new IllegalArgumentException();
 		this.nombre = nombre;
@@ -49,10 +47,7 @@ public class Persona {
 		if(apellidos == null) throw new IllegalArgumentException();
 		this.apellidos = apellidos;
 	}
-	
 	public void removeApellidos() {
 		this.apellidos = null;
 	}
-	
-	
 }

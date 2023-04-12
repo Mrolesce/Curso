@@ -1,9 +1,10 @@
 package com.example.domains.entities;
 
 import java.io.Serializable;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import jakarta.persistence.*;
+
 
 /**
  * The persistent class for the address database table.

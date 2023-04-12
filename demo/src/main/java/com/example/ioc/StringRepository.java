@@ -1,5 +1,5 @@
 package com.example.ioc;
 
-public interface StringRepository extends Repository<String>{
-	
+public interface StringRepository extends Repository<String> {
+
 }

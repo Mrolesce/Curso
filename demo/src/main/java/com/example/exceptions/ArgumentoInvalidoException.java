@@ -6,13 +6,9 @@ public class ArgumentoInvalidoException extends RuntimeException {
 		super();
 	}
 
-	public ArgumentoInvalidoException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
-	}
-
-	public ArgumentoInvalidoException(Throwable cause) {
-		super(cause);
+	public ArgumentoInvalidoException(String message, Throwable cause, boolean enableSuppression,
+			boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -21,9 +17,13 @@ public class ArgumentoInvalidoException extends RuntimeException {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ArgumentoInvalidoException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+	public ArgumentoInvalidoException(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
+
+	public ArgumentoInvalidoException(Throwable cause) {
+		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 

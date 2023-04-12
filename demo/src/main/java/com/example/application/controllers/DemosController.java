@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 //@RequestMapping(path = "/")
 public class DemosController {
-	
 	@GetMapping("/params/{id}")
 	@ResponseBody
 	public String cotilla(
@@ -27,4 +26,5 @@ public class DemosController {
 	    sb.append("cookie: " + cookie + "\n");
 	    return sb.toString();
 	}
+
 }

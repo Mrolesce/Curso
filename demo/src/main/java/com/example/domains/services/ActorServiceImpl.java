@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,15 +12,15 @@ import org.springframework.stereotype.Service;
 import com.example.domains.contracts.repositories.ActorRepository;
 import com.example.domains.contracts.services.ActorService;
 import com.example.domains.entities.Actor;
+import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 @Service
-public class ActorServiceImpl implements ActorService{
-
+public class ActorServiceImpl implements ActorService {
 	@Autowired
 	ActorRepository dao;
-	
+
 	@Override
 	public <T> List<T> getByProjection(Class<T> type) {
 		return dao.findAllBy(type);
@@ -62,10 +61,10 @@ public class ActorServiceImpl implements ActorService{
 		if(item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		if(item.isInvalid())
-			throw new InvalidDataException(item.getErrorsMessage());
+			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
 		if(dao.existsById(item.getActorId()))
 			throw new DuplicateKeyException(item.getErrorsMessage());
-			
+		
 		return dao.save(item);
 	}
 
@@ -74,31 +73,23 @@ public class ActorServiceImpl implements ActorService{
 		if(item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		if(item.isInvalid())
-			throw new InvalidDataException(item.getErrorsMessage());
+			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
 		if(!dao.existsById(item.getActorId()))
 			throw new NotFoundException();
-			
+		
 		return dao.save(item);
 	}
 
 	@Override
 	public void delete(Actor item) throws InvalidDataException {
-		if (item == null) {
+		if(item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		}else {
-			deleteById(item.getActorId());
-		}
-		
+		deleteById(item.getActorId());
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
-		
 	}
-	
-	
-	
-
 
 }

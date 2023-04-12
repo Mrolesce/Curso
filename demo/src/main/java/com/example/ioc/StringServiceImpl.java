@@ -13,26 +13,31 @@ public class StringServiceImpl implements StringService {
 	
 	public StringServiceImpl(StringRepository dao) {
 		this.dao = dao;
-		System.out.println("CREANDO EL STRINGSERVICEIMPL EN LOCAL CON AUTOWIRED");
+		System.out.println("Creo StringServiceImpl");
 	}
 	
 	@Override
 	public String get(Integer id) {
-		return dao.load() + "en local";
+		return dao.load() + " en local";
 	}
 
 	@Override
-	public void add(String item) throws NotFoundException, InvalidDataException  {
-		dao.save(item) ;
+	public void add(String item) throws NotFoundException {
+		
+		try {
+			dao.save(item);
+		} catch (InvalidDataException ex) {
+			throw new NotFoundException("No encontrado", ex);
+		}
 	}
 
 	@Override
-	public void modify(String item) throws InvalidDataException  {
+	public void modify(String item) throws InvalidDataException {
 		dao.save(item);
 	}
 
 	@Override
-	public void remove(Integer id) throws InvalidDataException  {
+	public void remove(Integer id) throws InvalidDataException {
 		dao.save(id.toString());
 	}
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,11 +49,11 @@ public class ActorResource {
 	}
 	
 	@GetMapping(params = "page")
-	public Page<ActorDTO> getAll(Pageable pageable) {
-		return srv.getByProjection(pageable, ActorDTO.class);
+	public Page<ActorShort> getAll(Pageable pageable) {
+		return srv.getByProjection(pageable, ActorShort.class);
 	}
 
-	@GetMapping(path = "/{id:\\d+}")//expresión genérica
+	@GetMapping(path = "/{id}")
 	public ActorDTO getOne(@PathVariable int id) throws NotFoundException {
 		var item = srv.getOne(id);
 		if(item.isEmpty())
@@ -66,7 +67,9 @@ public class ActorResource {
 		var item = srv.getOne(id);
 		if(item.isEmpty())
 			throw new NotFoundException();
-		return item.get().getFilmActors().stream().map(o -> new ElementoDTO<>(o.getFilm().getFilmId(), o.getFilm().getTitle())).toList();
+		return item.get().getFilmActors().stream()
+				.map(o -> new ElementoDTO<>(o.getFilm().getFilmId(), o.getFilm().getTitle()))
+				.toList();
 	}
 	
 	@PostMapping

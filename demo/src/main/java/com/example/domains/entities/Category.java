@@ -37,14 +37,6 @@ public class Category implements Serializable {
 	public Category() {
 	}
 
-
-	public Category(@Max(255) int categoryId) {
-		super();
-		this.categoryId = categoryId;
-	}
-
-
-
 	public int getCategoryId() {
 		return this.categoryId;
 	}

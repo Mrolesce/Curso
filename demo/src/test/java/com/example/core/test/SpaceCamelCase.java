@@ -26,3 +26,4 @@ public class SpaceCamelCase extends DisplayNameGenerator.Standard {
 		return result.toString();
 	}
 }
+

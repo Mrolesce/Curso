@@ -34,24 +34,28 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	@Column(name="first_name", nullable=false, length=45)
 	@NotBlank
 	@Size(max=45, min=2)
-	//@NIF
+//	@NIF
 	private String firstName;
 
 	@Column(name="last_name", nullable=false, length=45)
 	@Size(max=45, min=2)
-	@Pattern(regexp = "[A-Z]+", message = "Tiene que estar en mayúsculas")
+	@Pattern(regexp = "[A-Z]+", message = "Tiene que estar en mayusculas")
 	private String lastName;
 
-	@Column(name="last_update", insertable=false, updatable=false, nullable=false)
+	@Column(name="last_update", insertable=false, updatable=false, nullable=true)
 	@PastOrPresent
 	private Timestamp lastUpdate;
 
 	//bi-directional many-to-one association to FilmActor
-	//eager carga los datos aunque no se usen D:
 	@OneToMany(mappedBy="actor", fetch = FetchType.LAZY)
 	private List<FilmActor> filmActors = new ArrayList<>();
 
 	public Actor() {
+	}
+	
+	public Actor(int actorId) {
+		super();
+		this.actorId = actorId;
 	}
 
 	public Actor(int actorId, String firstName, String lastName) {
@@ -60,12 +64,6 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	
-	public Actor(int actorId) {
-		super();
-		this.actorId = actorId;
-	}
-
 
 
 	public int getActorId() {
@@ -144,7 +142,7 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 		return "Actor [actorId=" + actorId + ", firstName=" + firstName + ", lastName=" + lastName + ", lastUpdate="
 				+ lastUpdate + "]";
 	}
-	
+
 	public void jubilate() {
 		
 	}
@@ -152,5 +150,4 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	public void recibePremio(String premio) {
 		
 	}
-
 }

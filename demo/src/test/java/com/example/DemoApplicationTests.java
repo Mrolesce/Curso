@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -15,42 +16,70 @@ import org.springframework.test.context.ContextConfiguration;
 
 import com.example.ioc.StringRepository;
 import com.example.ioc.StringRepositoryMockImpl;
+import com.example.ioc.StringService;
+import com.example.ioc.StringServiceImpl;
 
-@SpringBootTest
+@SpringBootTest(properties = {"mi.valor=Falso"})
+//@Disabled
 class DemoApplicationTests {
-	
+
 	@Autowired
 	StringRepository dao;
+	
+	@Autowired
+	@Qualifier("Local")
+	StringService srv;
 	
 	@Test
 	void contextLoads() {
 		assertEquals("Soy el StringRepositoryImpl", dao.load());
+		assertEquals("Soy el StringRepositoryImpl en local", srv.get(1));
 	}
 	
 	@Value("${mi.valor:(Sin valor)}")
 	private String config;
-	
+	@Test
+	void valueLoads() {
+		assertEquals("Falso", config);
+//		assertEquals("Valor por defecto", config);
+	}
+
 	public static class IoCTestConfig {
 		@Bean
-		StringRepository getServicio() {
-			return new StringRepositoryMockImpl();		
+		StringRepository getRepository() {
+			// return new ServicioImpl();
+			return new StringRepositoryMockImpl();
+		}
+		@Bean
+		StringService getServicio(StringRepository dao) {
+			return new StringServiceImpl(dao);
 		}
 	}
 	
 	@Nested
 	@ContextConfiguration(classes = IoCTestConfig.class)
 	@ActiveProfiles("test")
-	class IocTest {
+	class IoCTest {
 		@Autowired
 		StringRepository dao;
+		@Autowired
+		@Qualifier("Local")
+		StringService srv;
 		
 		@Test
 		void contextLoads() {
-			assertEquals("Soy el doble de prueba de StringRepositoryImpl", dao.load());
-			assertEquals("Valor para las pruebas", config);
+//			assertEquals("Soy el doble de pruebas de StringRepository", dao.load());
+			assertEquals("Soy el doble de pruebas de StringRepository en local", srv.get(1));
+		}
+		
+		@Value("${mi.valor:(Sin valor)}")
+		private String config;
+		@Test
+		void valueLoads() {
+			assertEquals("Falso", config);
+			//assertEquals("Valor para las pruebas", config);
 		}
 	}
-	
 	
 	@Nested
 	class IoCUnicoTest {
@@ -71,7 +100,5 @@ class DemoApplicationTests {
 			assertEquals("Soy el StringRepositoryImpl", dao.load());
 		}
 	}
-	
-	
 	
 }
