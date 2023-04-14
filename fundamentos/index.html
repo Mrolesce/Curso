@@ -17,8 +17,9 @@
     </script>
     <script src="demo.js"></script>
     <script type="module">
-        import * as m1  from './modulo1.js'
-        import {nombre, calc, display, multiplica} from './modulo2.js'
+        import * as m1  from './modulos/modulo1.js'
+        import {nombre, calc, multiplica} from './modulos/modulo2.js'
+        import {display} from './modulos/index.js'
 
         console.log(m1.nombre, m1.calc(2,2))
         console.log(nombre, multiplica(10, 10))
