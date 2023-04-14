@@ -78,9 +78,6 @@ coordenadas = (x,y) => x + y;
 console.log(coordenadas(punto.x, punto.y));
 //console.log(coordenadas(...punto));
 
-(function () {
-    console.log('ola');
-})
 
 //sintaxis distintas , mismo resultado
 function suma(a, b) { return a + b; }
@@ -137,6 +134,16 @@ o['apellidos'] = 'Grillo'
 o.nom = () => o.nombre + ' ' + o.apellidos;
 p = { nombre: 'Carmelo', apellidos: 'Cotón', nom : () => p.nombre + ' ' + p.apellidos}
 
+// apply recibe siempre dos parámetros, el segundo siendo un array de parámetros
+// call recibe 1
+
+// lambda se define en la definición del function, el .this hace referencia al contexto del bloque, si está en global es un .this global, si esta en una clase hace referencia a la clase
+ponNom = function () { return `${this.nombre} ${this.apellidos}`};
+
+console.log('--------------------');
+console.log(ponNom.call(o));
+console.log('--------------------');
+
 console.log(`${o.nombre} ${o.apellidos} Función --> ${o.nom()} `);
 console.log(`${p.nombre} ${p.apellidos} Función --> ${p.nom()} `);
 
@@ -150,9 +157,90 @@ function MiClase(elId, nombre){
 let persona = new MiClase('1', 'Marc');
 let persona2 = new MiClase('1', 'Marc');
 console.log(persona);
-persona.ponNombre('Hola')
+persona.ponNombre('Pepito');
 console.log(persona);
 //prototype está un escalón por encima de MiClase
 MiClase.prototype.cotilla = () => console.log('Estoy en el prototipo'); // creación de método a nivel de prototipo, que esta por encima de constructor
 
+MiClase.prototype.changeName = (persona, nombre) => persona.nombre = nombre;
+
+persona.changeName(persona, 'Jesús');
+console.log(persona)
+
+console.log(persona instanceof MiClase);
+
 persona.cotilla();
+
+hey = (str1, str2) => {
+    let hey = str1;
+    let queTal = str2;
+
+    return str1 + ' ' + str2;
+};
+
+console.log(hey('Marc', 'Roles'));
+// función anónima que no deja rastro
+(function () {
+    console.log('ola');
+})();
+// lo mismo apero cortado
+(() =>  console.log('ola'))();
+
+// console.log(globalThis); // devuelve los atributos del global
+
+// podemos añadir métodos extra a clases que no son nuestras
+Array.prototype.kk = () => console.log('Ahora tengo mucha kk');
+
+t = []
+t.kk();
+
+// .this apunta al valor dependiendo en el contexto en que se encuentre
+
+let x = 10, y=20;
+punto = { x: x, y: y, suma: function() {return this.x + this.y}} // las siguientes dos líneas hacen lo mismo, si tienes buen nombre de variable no hace falta tener que asignarlo a mano
+punto = {x, y, suma() {return this.x + this.y}}
+
+console.log(punto.suma())
+
+//Clase en JS
+class Rectangulo{
+    constructor(ancho, alto){
+        this._ancho = ancho;
+        this._alto = alto;
+    }
+    set ancho (ancho) {this._ancho = ancho;}
+    get ancho () {return this._ancho;}
+    set alto (alto) {this._alto = alto}
+    get alto () {return this._alto;}
+
+    get area () {return this._ancho * this._alto}
+
+}
+
+let figura = new Rectangulo(10, 20);
+
+console.log(figura.area);
+
+///////////////////
+
+class Persona {
+    constructor(id, nombre, apellidos){
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+    }
+    get nombreCompleto () {return this.nombre + ' ' + this.apellidos}
+    pinta() {
+        console.log(this.nombreCompleto);
+    }
+}
+
+let guy = new Persona(1, 'Marc', 'Roles');
+let guy2 = new Persona(2, 'Juan', 'Alberto');
+let guy3 = new Persona(3, 'Pepito', 'Grillo');
+
+guy.pinta();
+
+let names = guy.nombreCompleto.split(' ');
+
+console.log(names[0] + ' ' + names[1]);
