@@ -244,3 +244,25 @@ guy.pinta();
 let names = guy.nombreCompleto.split(' ');
 
 console.log(names[0] + ' ' + names[1]);
+
+m = { name: 'Pepe', apellidos: 'Grillo', edad: 29, nacionalidad: 'portuguesa', ex: [1,2,3]}
+
+function nombreApellidos() { return `${this.name} ${this.apellidos}`}
+
+console.log(nombreApellidos.call(m))
+
+// function no se serializa
+// solo se serializan datos
+// JSON.parse ()
+// JSON.stringify ()
+
+//transformación a json
+let json = JSON.stringify(m);
+
+console.log(json);
+//transformación a objeto
+json = JSON.parse(json)
+
+console.log(json.name)
+
+console.log(json.ex[1])
