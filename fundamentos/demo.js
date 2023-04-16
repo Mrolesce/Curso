@@ -268,3 +268,11 @@ console.log(json.name)
 console.log(json.ex[1])
 
 //debugger; para parar el código en depuración
+
+async function logJSONData() {
+    const response = await fetch("http://localhost:8080/catalogo/api/lenguajes");
+    const jsonData = await response.json();
+    console.log(jsonData);
+}
+
+logJSONData();
