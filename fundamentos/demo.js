@@ -266,3 +266,5 @@ json = JSON.parse(json)
 console.log(json.name)
 
 console.log(json.ex[1])
+
+//debugger; para parar el código en depuración
