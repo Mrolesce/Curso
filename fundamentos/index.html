@@ -56,11 +56,24 @@
         (function(){
             let result = document.querySelector('output');//querySelector devuelve uno o ninguno, en caso de que haya varios devuelve el primero
             let btn = document.querySelector('input[type=button]');
+            // localStorage lo gestiona el navegador
+            if(localStorage && localStorage.result){
+                result.textContent = localStorage.result;
+                console.log(result.textContent);
+                // console.log(localStorage.getItem('result'));
+                // localStorage.setItem('clave', 'valor')
+
+            }
 
             let suma = ev => { // + en frente del document para cambiar de string a número
                 // result.textContent = +document.querySelector('#op1').value + +document.querySelector('#op2').value;
                 result.innerHTML = `<b>${+document.querySelector('#op1').value + +document.querySelector('#op2').value}</b>`
+                if(localStorage){
+                    localStorage.result = +document.querySelector('#op1').value + +document.querySelector('#op2').value;
+                }
             };
+
+            localStorage.kk = {id: 1, nombre: 'kk'};
 
             btn.addEventListener('click', suma);// dblClick para que sea doble click
 
@@ -78,6 +91,8 @@
                 }
                 document.querySelector('#lista').innerHTML = cad;
             })
+
+            
             
         })();
     </script>
