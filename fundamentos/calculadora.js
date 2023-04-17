@@ -12,7 +12,6 @@ let resultado = document.querySelector('#resultado');
 
 clear.addEventListener('click', ev => {
     pantallaMsg = '';
-    num = 0;
     acumulated = 0;
     op = '+';
     pantalla.textContent = pantallaMsg;
@@ -58,12 +57,12 @@ function opera(newOp){
     }
     
     pantallaMsg='';
-    pantalla.textContent = acumulated.toPrecision(15).toString();
+    pantalla.textContent = parseFloat(acumulated.toPrecision(15).toString());
     op = newOp;
     limpia = true;
 
     if(newOp == '='){
-        num = 0;
-        acumulated = 0;
+        limpia=false;
+        pantallaMsg = '';
     }
 }

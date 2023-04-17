@@ -1,24 +1,38 @@
 #calculadora {
+    background-color: #BAE8E6;
     width: 40%;
-    border: solid;
+    border-radius: 25px;
     margin-top: 30px;
     padding: 50px;
+    box-shadow: 5px 5px #9EC6C5;
+    font-family: consolas;
 }
 .col-sm{
-    align-items: center!important;
+    align-content: center;
     margin: 0px!important;
-    padding: 0px;
+    padding: 10px;
 }
 .col{
     padding: 0px!important;
 }
 input[type=button]{
-    width: 100%;
-    height: 80px;
+    width: 50px;
+    height: 50px;
+    background-color: #9EC6C5;
+    padding-top: 20px!important;
+    flex-direction: column;
+    border-radius: 14px;
+    box-shadow: 3px 3px ;
 }
 output{
+    background-color: white;
     height: 40px;
     width: 100%;
-    border: solid;
+    border-color: #9EC6C5;
+    border-radius: 25px;
     margin-bottom: 5px;
+    padding: 7px;
+    padding-left: 15px;
+    margin-bottom: 20px;
+    box-shadow: 3px 3px #9EC6C5;
 }
