@@ -8,3 +8,4 @@
  * __Catalogo-Tests.postman_collection.json__ -> Tests de el API REST Catalogo con Postman
 * __GuildedRose__ -> Refactoring Kata
 * __ms.eureka__ -> Netflix Eureka
+* __Fundamentos__ -> Ejemplos HTML, CSS y JS. 
