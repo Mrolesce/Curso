@@ -1,0 +1,24 @@
+#calculadora {
+    width: 40%;
+    border: solid;
+    margin-top: 30px;
+    padding: 50px;
+}
+.col-sm{
+    align-items: center!important;
+    margin: 0px!important;
+    padding: 0px;
+}
+.col{
+    padding: 0px!important;
+}
+input[type=button]{
+    width: 100%;
+    height: 80px;
+}
+output{
+    height: 40px;
+    width: 100%;
+    border: solid;
+    margin-bottom: 5px;
+}
