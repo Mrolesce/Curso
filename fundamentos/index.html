@@ -9,6 +9,7 @@
     <title>Catálogo</title>
 </head>
 <body>
+    <!-- Navigation bar de Bootstrap -->
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
             <div class="container-fluid">
@@ -35,6 +36,51 @@
             </div>
         </nav>
     </header>
+    <!-- Ejemplo calculadora -->
+    <main class="container-fluid">
+        <div>
+            <input type="number" id="op1" value="0">
+            <span>+</span>
+            <input type="number" id="op2" value="0">
+            <input type="button" id="op1" value="=">
+            <output>0</output>
+        </div>
+        <div>
+            <button type="button" id="btnLista">Lista</button>
+            <ul id="lista">
+
+            </ul>
+        </div>
+    </main>
+    <script>
+        (function(){
+            let result = document.querySelector('output');//querySelector devuelve uno o ninguno, en caso de que haya varios devuelve el primero
+            let btn = document.querySelector('input[type=button]');
+
+            let suma = ev => { // + en frente del document para cambiar de string a número
+                // result.textContent = +document.querySelector('#op1').value + +document.querySelector('#op2').value;
+                result.innerHTML = `<b>${+document.querySelector('#op1').value + +document.querySelector('#op2').value}</b>`
+            };
+
+            btn.addEventListener('click', suma);// dblClick para que sea doble click
+
+            btn.addEventListener('click', ev => { 
+                console.log('Botón pulsado');
+            });
+            document.querySelector('span').addEventListener('click', ev => {console.log('Soy un span')})
+
+            // genera elementos li dentro de ul
+            let listaBtn = document.querySelector('#btnLista');
+            listaBtn.addEventListener('click', ev =>{
+                let cad = '';
+                for(let i = 0; i < 10; i++){
+                    cad += `<li>Elemento ${i+1}</li>`
+                }
+                document.querySelector('#lista').innerHTML = cad;
+            })
+            
+        })();
+    </script>
 
     <div class="container" >
         <footer class="py-3 my-4" >
@@ -45,10 +91,10 @@
           </ul>
           <p class="text-center text-muted">© 2022 Company, Inc</p>
         </footer>
-      </div>
+    </div>
       
 
-    <script>
+    <!-- <script>
         console.log('Buenas mundo desde body');
     </script>
     <script src="demo.js"></script>
@@ -59,6 +105,6 @@
 
         console.log(m1.nombre, m1.calc(2,2))
         console.log(nombre, multiplica(10, 10))
-    </script>
+    </script> -->
 </body>
 </html>
