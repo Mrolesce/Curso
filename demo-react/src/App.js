@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 // import { eventWrapper } from "@testing-library/user-event/dist/utils";
 
 import React, { Component } from "react";
-import { Contador } from "./componentes";
+import { Card, Contador } from "./componentes";
 
 export default class App extends Component {
   render() {
@@ -14,8 +14,10 @@ export default class App extends Component {
         <DemoJSX />
         <Timer /> */}
         <main className="container-fluid">
-        <Home />
-          <Contador init={10} delta={2}/>
+        <Card tittle='Ejemplo de componente'>
+        <Contador init={10} delta={2}/>
+        </Card>
+          
         </main>
       </>
     );
