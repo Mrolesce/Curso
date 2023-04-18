@@ -1,6 +1,15 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 function Pantalla(props){
     return <output>{props.valor}</output>
+}
+
+function Botonera({onSube, onBaja}){
+    return (
+        <div>
+          <input type='button' value='-' onClick={() => onBaja && onBaja()}/>
+          {onSube && <input type='button' value='+' onClick={onSube}/>}
+        </div>
+    )
 }
 export class Contador extends Component {
     constructor(props){
@@ -13,11 +22,19 @@ export class Contador extends Component {
         this.baja = () => {
             this.changeContador(-this.delta);
         }
-        this.sube = this.sube.bind(this);
+        // this.sube = this.sube.bind(this);
     }
 
     changeContador(value){
-        this.setState(prev => ({contador: prev.contador + value}))
+        //this.setState(prev => ({contador: prev.contador + value}));
+        this.setState(prev => {
+            let result = {contador: prev.contador + value}
+            if(this.props.onChange){
+                this.props.onChange(result.contador);
+            }
+            return result;
+        });
+        
     }
     sube(){
         this.changeContador(this.delta);
@@ -28,10 +45,10 @@ export class Contador extends Component {
         
       <div>
         <Pantalla valor={this.state.contador} />
-        <output></output>
+        <Botonera onBaja={this.baja} onSube={this.sube.bind(this)}/>
         <div>
-          <input type="button" value="-" onClick={this.baja}/>
-          <input type="button" value="+" onClick={this.sube}/>
+          {/* <input type='button' value='-' onClick={this.baja}/>
+          <input type='button' value='+' onClick={this.sube.bind(this, '+')}/> */}
           <input type='button' value='Init' onClick={() => this.setState({contador: 0})}/>
         </div>
       </div>

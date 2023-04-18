@@ -7,17 +7,24 @@ import React, { Component } from "react";
 import { Card, Contador } from "./componentes";
 
 export default class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        cont: 0
+    }
+}
   render() {
     return (
       <>
         {/*  <Home />
         <DemoJSX />
-        <Timer /> */}
+        */}
         <main className="container-fluid">
         <Card tittle='Ejemplo de componente'>
-        <Contador init={10} delta={2}/>
+        <Contador init={10} delta={2} onChange={num => this.setState({cont: num})}/>
         </Card>
-          
+        <p>El contador: {this.state.cont}</p>
+        <Timer /> 
         </main>
       </>
     );
