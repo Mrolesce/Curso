@@ -1,8 +1,69 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { eventWrapper } from "@testing-library/user-event/dist/utils";
+import { useState, useEffect } from "react";
+// import { eventWrapper } from "@testing-library/user-event/dist/utils";
 
-function App() {
+import React, { Component } from "react";
+
+export default class App extends Component {
+  render() {
+    return (
+      <>
+        <Home />
+        <DemoJSX />
+        <Timer />
+      </>
+    );
+  }
+}
+class DemoJSX extends Component {
+  render() {
+    let nombre = "<b>Mundo</b>";
+    let estilo = "App-link";
+    let saluda = <span>Hola {nombre}!</span>;
+    let dim = { width: 100, height: 50 };
+    let errorStyle = { color: "white", backgroundColor: "red" };
+    let list = [
+      { id: 1, nombre: "Madrid" },
+      { id: 2, nombre: "Barcelona" },
+      { id: 3, nombre: "Valencia" },
+      { id: 4, nombre: "Sevilla" },
+    ];
+    let cond = true; //  ?? si llega con valor, lo printa. && es el if sin el else '? : ' -> '? && '
+    return (
+      <>
+        {/*<h2 className={estilo} dangerouslySetInnerHTML={{__html: nombre}}></h2>*/}
+        <h2 className={estilo}>{saluda}</h2>
+        {cond ? (
+          <h1 style={{ color: "green" }}>Es true</h1>
+        ) : (
+          <h1 style={{ color: "red" }}>Es false</h1>
+        )}
+        {!cond && <h1>Hola</h1>}
+        {errorStyle?.color?.backgroundColor ? <h1>Null</h1> : <h1>No null</h1>}
+        <div style={{ color: "white", backgroundColor: "#61dafb" }}>
+          DemoJSX
+        </div>
+        <div style={errorStyle}>DemoJSXERROR</div>
+        <ul>
+          {[1, 2, 3, 4, 5, 4, 3, 2, 1].map((item, index) => (
+            <li key={index}>Element -&gt; {item}</li>
+          ))}
+        </ul>
+        <select>
+          {list.map((item) => (
+            <option key={item.id} value={item.value}>
+              {item.nombre}
+            </option>
+          ))}
+        </select>
+        <img src={logo} className="App-logo" alt="logo" {...dim} />
+      </>
+    );
+  }
+}
+
+function Home() {
   return (
     // eslint-disable-next-line jsx-quotes
     <div className="App">
@@ -26,4 +87,21 @@ function App() {
   );
 }
 
-export default App;
+function Timer() {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  return (
+    <div>
+      <p>{time.toLocaleTimeString()}</p>
+    </div>
+  );
+}
+
+//export default App;
