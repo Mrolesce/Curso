@@ -40,19 +40,15 @@ function opera(newOp){
     switch(op){
         case '+':
             acumulated+= +pantallaMsg;
-            num=0;
             break;
         case '-':
             acumulated-= +pantallaMsg;
-            num=0;
             break;
         case '*':
             acumulated*= +pantallaMsg;
-            num=0;
             break;
         case '/':
             acumulated/= +pantallaMsg;
-            num=0;
             break;
     }
     
