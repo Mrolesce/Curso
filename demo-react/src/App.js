@@ -4,14 +4,19 @@ import { useState, useEffect } from "react";
 // import { eventWrapper } from "@testing-library/user-event/dist/utils";
 
 import React, { Component } from "react";
+import { Contador } from "./componentes";
 
 export default class App extends Component {
   render() {
     return (
       <>
-        <Home />
+        {/*  <Home />
         <DemoJSX />
-        <Timer />
+        <Timer /> */}
+        <main className="container-fluid">
+        <Home />
+          <Contador init={10} delta={2}/>
+        </main>
       </>
     );
   }
@@ -70,7 +75,7 @@ function Home() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h1>Hello World!</h1>
-        <h2>{process.env.API_URL}</h2>
+        <h2>{process.env.REACT_APP_API_URL}</h2>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
