@@ -18,17 +18,18 @@ clear.addEventListener('click', ev => {
 })
 
 for (b of botonesNum) {
-    b.addEventListener('click', ev =>{
-        if(pantallaMsg.indexOf('.') === -1){
-            pantalla.textContent += '.';
-        }
-        if(limpia){
-            pantallaMsg = '';
-            limpia = false;
-        }
-        pantalla.textContent = pantallaMsg += ev.target.value;
-    })
-}
+    b.addEventListener('click', (ev) => {
+      if (limpia) {
+        pantallaMsg = "";
+        limpia = false;
+      }
+      if (ev.target.value === "." && pantallaMsg.includes(".")) {
+        return;
+      }
+      pantallaMsg = pantallaMsg + ev.target.value;
+      pantalla.textContent = pantallaMsg;
+    });
+  }
 
 for (let opBtn of botonesOp){
     opBtn.addEventListener('click', ev => {
