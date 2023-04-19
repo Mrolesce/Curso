@@ -61,7 +61,7 @@ export default class Calculadora extends Component {
     return (
       <div className="container" id="calculadora">
         <div className="row">
-          <div className="col">
+          <div className="colz">
             <output>{this.state.pantalla}</output>
           </div>
         </div>
@@ -224,7 +224,7 @@ export default class Calculadora extends Component {
           <div className="col-sm">
             <input
               type="button"
-              className="btnOp"
+              className="btnOp boton"
               id="resultado"
               defaultValue="="
               onClick={this.opera}

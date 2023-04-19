@@ -115,7 +115,7 @@ export function Card({ ruta, id, author }) {
         >
           <title>Placeholder</title>
           <rect width="100%" height="100%" fill="#868e96" />
-          <text x="42.1%" y="50%" fill="#dee2e6" dy=".3em">
+          <text x="42.01%" y="50%" fill="#dee2e6" dy=".3em">
             Foto {+id + 1}
           </text>
         </svg>
