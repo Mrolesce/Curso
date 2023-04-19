@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import React, { Component } from "react";
 import { Card, Contador } from "./componentes";
 import Calculadora from "./calculadoraReact";
+import Muro from "./muro";
 
 export default class App extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class App extends Component {
     };
     this.menu = [
       { text: "Inicio", url: "/", componente: <Home /> },
+      { text: "Muro", url: "/muro", componente: <Muro /> },
       { text: "Demos", url: "/demos", componente: <DemoJSX /> },
       {
         text: "Contador",
@@ -30,6 +32,7 @@ export default class App extends Component {
       },
       { text: "Ejemplos", url: "/ejemplos", componente: <Ejemplos /> },
       { text: "Calculadora", url: "/calculadora", componente: <Calculadora /> },
+      
     ];
   }
   render() {
@@ -58,51 +61,50 @@ function Cabecera(props) {
 
 function Menu({ menu, onSelectMenu }) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand" href="blank">
-        Catálogo
-      </a>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon" />
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          {menu.map((item, index) => (
-            <li className="nav-item">
-              <a
-                href="localhost:3000/#"
-                className="nav-link"
-                key={index}
-                type="button"
-                onClick={() => onSelectMenu && onSelectMenu(index)}
-              >
-                {item.text}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <form className="form-inline my-2 my-lg-0">
-          <input
-            className="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
-          <button
-            className="btn btn-outline-success my-2 my-sm-0"
-            type="submit"
-          >
-            Search
-          </button>
-        </form>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="blank">
+          Catálogo
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon" />
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto">
+            {menu.map((item, index) => (
+              <li className="nav-item">
+                <a
+                  href="/#"
+                  className="nav-link"
+                  key={index}
+                  type="button"
+                  onClick={() => onSelectMenu && onSelectMenu(index)}
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <form className="d-flex" role="search">
+            <input
+              className="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button className="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
       </div>
     </nav>
   );
