@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import './calculadora.css'
 export default class Calculadora extends Component {
     constructor(props){
         super(props);
@@ -52,6 +52,7 @@ export default class Calculadora extends Component {
         this.limpiar = () => {
             this.setState({pantalla: ''});
             this.acumalated = 0;
+            this.operador = '+';
         }
 
     }
