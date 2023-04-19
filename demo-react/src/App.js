@@ -45,8 +45,8 @@ function Cabecera(props){
 
 function Menu({menu, onSelectMenu}){
   return (
-    <nav>
-      {menu.map((item, index) => <button key={index} type='button' onClick={() => onSelectMenu && onSelectMenu(index)}>{item.text}</button> )}
+    <nav className='navbar navbar-expand-lg navbar-light bg-light'>
+      {menu.map((item, index) => <button className='nav-link' key={index} type='button' onClick={() => onSelectMenu && onSelectMenu(index)}>{item.text}</button> )}
     </nav>
   );
 }
