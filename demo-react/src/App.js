@@ -1,10 +1,11 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { useState, useEffect } from "react";
-// import { eventWrapper } from "@testing-library/user-event/dist/utils";
+import logo from './logo.svg';
+import './App.css';
+import { useState, useEffect } from 'react';
+// import { eventWrapper } from '@testing-library/user-event/dist/utils';
 
-import React, { Component } from "react";
-import { Card, Contador } from "./componentes";
+import React, { Component } from 'react';
+import { Card, Contador } from './componentes';
+import Calculadora from './calculadoraReact';
 
 export default class App extends Component {
   constructor(props){
@@ -17,14 +18,15 @@ export default class App extends Component {
       { text: 'inicio', url: '/', componente: <Home/>},
       { text: 'demos', url: '/demos', componente: <DemoJSX/>},
       { text: 'contador', url: '/contador', componente: <Contador init={10} delta={2} onChange={num => this.setState({cont: num})}/>},
-      { text: 'ejemplos', url: '/', componente: <Ejemplos/>}
+      { text: 'ejemplos', url: '/ejemplos', componente: <Ejemplos/>},
+      { text: 'calculadora', url:'/calculadora', componente: <Calculadora/>}
     ]
 }
   render() {
     return (
       <>
         <Cabecera menu={this.menu} onSelectMenu={indice => this.setState({main: indice})}/>
-        <main className="container-fluid">
+        <main className='container-fluid'>
           {this.menu[this.state.main].componente}
         </main>
         <Pie />
@@ -44,7 +46,7 @@ function Cabecera(props){
 function Menu({menu, onSelectMenu}){
   return (
     <nav>
-      {menu.map((item, index) => <button key={index} type="button" onClick={() => onSelectMenu && onSelectMenu(index)}>{item.text}</button> )}
+      {menu.map((item, index) => <button key={index} type='button' onClick={() => onSelectMenu && onSelectMenu(index)}>{item.text}</button> )}
     </nav>
   );
 }
@@ -68,11 +70,12 @@ export class Ejemplos extends Component {
         {/*  <Home />
         <DemoJSX />
         */}
-        <main className="container-fluid">
+        <main className='container-fluid'>
         <Card tittle='Ejemplo de componente'>
         <Contador init={10} delta={2} onChange={num => this.setState({cont: num})}/>
         </Card>
         <p>El contador: {this.state.cont}</p>
+        <input className='btn btn-bg-danger' type='button' value='no tocar' onClick={() => {throw new Error('No tocar')}}/>
         <Timer /> 
         </main>
       </>
@@ -81,16 +84,16 @@ export class Ejemplos extends Component {
 }
 class DemoJSX extends Component {
   render() {
-    let nombre = "<b>Mundo</b>";
-    let estilo = "App-link";
+    let nombre = '<b>Mundo</b>';
+    let estilo = 'App-link';
     let saluda = <span>Hola {nombre}!</span>;
     let dim = { width: 100, height: 50 };
-    let errorStyle = { color: "white", backgroundColor: "red" };
+    let errorStyle = { color: 'white', backgroundColor: 'red' };
     let list = [
-      { id: 1, nombre: "Madrid" },
-      { id: 2, nombre: "Barcelona" },
-      { id: 3, nombre: "Valencia" },
-      { id: 4, nombre: "Sevilla" },
+      { id: 1, nombre: 'Madrid' },
+      { id: 2, nombre: 'Barcelona' },
+      { id: 3, nombre: 'Valencia' },
+      { id: 4, nombre: 'Sevilla' },
     ];
     let cond = true; //  ?? si llega con valor, lo printa. && es el if sin el else '? : ' -> '? && '
     return (
@@ -98,13 +101,13 @@ class DemoJSX extends Component {
         {/*<h2 className={estilo} dangerouslySetInnerHTML={{__html: nombre}}></h2>*/}
         <h2 className={estilo}>{saluda}</h2>
         {cond ? (
-          <h1 style={{ color: "green" }}>Es true</h1>
+          <h1 style={{ color: 'green' }}>Es true</h1>
         ) : (
-          <h1 style={{ color: "red" }}>Es false</h1>
+          <h1 style={{ color: 'red' }}>Es false</h1>
         )}
         {!cond && <h1>Hola</h1>}
         {errorStyle?.color?.backgroundColor ? <h1>Null</h1> : <h1>No null</h1>}
-        <div style={{ color: "white", backgroundColor: "#61dafb" }}>
+        <div style={{ color: 'white', backgroundColor: '#61dafb' }}>
           DemoJSX
         </div>
         <div style={errorStyle}>DemoJSXERROR</div>
@@ -120,7 +123,7 @@ class DemoJSX extends Component {
             </option>
           ))}
         </select>
-        <img src={logo} className="App-logo" alt="logo" {...dim} />
+        <img src={logo} className='App-logo' alt='logo' {...dim} />
       </>
     );
   }
@@ -129,19 +132,19 @@ class DemoJSX extends Component {
 function Home() {
   return (
     // eslint-disable-next-line jsx-quotes
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className='App'>
+      <header className='App-header'>
+        <img src={logo} className='App-logo' alt='logo' />
         <h1>Hello World!</h1>
         <h2>{process.env.REACT_APP_API_URL}</h2>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+          className='App-link'
+          href='https://reactjs.org'
+          target='_blank'
+          rel='noopener noreferrer'
         >
           Learn React
         </a>
