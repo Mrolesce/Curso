@@ -9,7 +9,6 @@ export default class Muro extends Component {
       loading: true,
       error: null,
     };
-    this.estilo = "hidden";
     this.ultimoPulsado = 0;
   }
   render() {
@@ -30,35 +29,47 @@ export default class Muro extends Component {
                 </div>
               ))}
           </div>
-          <nav aria-label="Page navigation example">
+          <div className="row mt-4" style={{paddingLeft: '0!important'}}>
+          <nav aria-label="Page navigation example" style={{paddingLeft: '0px!important'}}>
             <ul className="pagination">
-              <li className="page-item">
-                <button type="button" className="page-link" onClick={() => this.load(1)}>
+              <li className="page-item" style={this.ultimoPulsado===1?{display: 'none'}:{display: 'block'}}>
+                <button type="button" className="page-link" onClick={() => this.load(this.ultimoPulsado===1?1:this.ultimoPulsado-1)}>
                   Previous
                 </button>
               </li>
-              <li className="page-item">
+              <li className={`page-item ${this.ultimoPulsado===1?'active':''}`}>
                 <button type="button" className="page-link" onClick={() => this.load(1)}>
                   1
                 </button>
               </li>
-              <li className="page-item">
+              <li className={`page-item ${this.ultimoPulsado===2?'active':''}`}>
                 <button type="button" className="page-link" onClick={() => this.load(2)}>
                   2
                 </button>
               </li>
-              <li className="page-item">
+              <li className={`page-item ${this.ultimoPulsado===3?'active':''}`}>
                 <button type="button" className="page-link" onClick={() => this.load(3)}>
                   3
                 </button>
               </li>
-              <li className="page-item">
-                <button type="button" className="page-link" onClick={() => this.load(3)}>
+              <li className={`page-item ${this.ultimoPulsado===4?'active':''}`}>
+                <button type="button" className="page-link" onClick={() => this.load(4)}>
+                  4
+                </button>
+              </li>
+              <li className={`page-item ${this.ultimoPulsado===5?'active':''}`}>
+                <button type="button" className="page-link" onClick={() => this.load(5)}>
+                  5
+                </button>
+              </li>
+              <li className="page-item" style={this.ultimoPulsado===5?{display: 'none'}:{display: 'block'}}>
+                <button type="button" className="page-link" onClick={() => this.load(this.ultimoPulsado===5?5:this.ultimoPulsado+1)}>
                   Next
                 </button>
               </li>
             </ul>
           </nav>
+          </div>
         </div>
       </>
     );
@@ -68,6 +79,7 @@ export default class Muro extends Component {
     this.setState({ error: msg });
   }
   load(num) {
+    this.ultimoPulsado=num;
     this.setState({ loading: true });
     fetch("https://picsum.photos/v2/list?page=" + num + "&limit=24")
       .then((resp) => {
@@ -103,7 +115,7 @@ export function Card({ ruta, id, author }) {
         >
           <title>Placeholder</title>
           <rect width="100%" height="100%" fill="#868e96" />
-          <text x="42.7%" y="50%" fill="#dee2e6" dy=".3em">
+          <text x="42.1%" y="50%" fill="#dee2e6" dy=".3em">
             Foto {+id + 1}
           </text>
         </svg>
