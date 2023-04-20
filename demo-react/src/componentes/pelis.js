@@ -1,11 +1,16 @@
-import React, { Component } from 'react';
-import { ValidationMessage, ErrorMessage, Esperando, PaginacionCmd as Paginacion,} from '../biblioteca/comunes';
-import { titleCase } from '../biblioteca/formateadores';
+import React, { Component } from "react";
+import {
+  ValidationMessage,
+  ErrorMessage,
+  Esperando,
+  PaginacionCmd as Paginacion,
+} from "../biblioteca/comunes";
+import { titleCase } from "../biblioteca/formateadores";
 export class PelisMnt extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modo: 'list',
+      modo: "list",
       listado: null,
       elemento: null,
       error: null,
@@ -15,7 +20,8 @@ export class PelisMnt extends Component {
     };
     this.idOriginal = null;
     this.url =
-      (process.env.REACT_APP_API_URL || 'http://localhost:8080/catalogo') +'/api/films/v1';
+      (process.env.REACT_APP_API_URL || "http://localhost:8080/catalogo") +
+      "/api/films/v1";
   }
 
   setError(msg) {
@@ -32,7 +38,7 @@ export class PelisMnt extends Component {
           response.ok
             ? (data) => {
                 this.setState({
-                  modo: 'list',
+                  modo: "list",
                   listado: data.content,
                   loading: false,
                   pagina: data.number,
@@ -47,23 +53,21 @@ export class PelisMnt extends Component {
 
   add() {
     this.setState({
-      modo: 'add',
-      elemento: 
-      {
-        'filmId': 1,
-        'description': '',
-        'length': 0,
-        'rating': 'NC-17',
-        'releaseYear': '2018',
-        'rentalDuration': 7,
-        'rentalRate': 2.99,
-        'replacementCost': 18.99,
-        'title': '',
-        'languageId': 1,
-        'languageVOId': null,
-        'actors': [
-        ],
-        'categories': []
+      modo: "add",
+      elemento: {
+        filmId: 1,
+        description: "",
+        length: 0,
+        rating: "NC-17",
+        releaseYear: "2018",
+        rentalDuration: 7,
+        rentalRate: 2.99,
+        replacementCost: 18.99,
+        title: "",
+        languageId: 1,
+        languageVOId: null,
+        actors: [],
+        categories: [],
       },
     });
   }
@@ -75,7 +79,7 @@ export class PelisMnt extends Component {
           response.ok
             ? (data) => {
                 this.setState({
-                  modo: 'edit',
+                  modo: "edit",
                   elemento: data,
                   loading: false,
                 });
@@ -94,7 +98,7 @@ export class PelisMnt extends Component {
           response.ok
             ? (data) => {
                 this.setState({
-                  modo: 'view',
+                  modo: "view",
                   elemento: data,
                   loading: false,
                 });
@@ -105,9 +109,9 @@ export class PelisMnt extends Component {
       .catch((error) => this.setError(error));
   }
   delete(key) {
-    if (!window.confirm('¿Seguro?')) return;
+    if (!window.confirm("¿Seguro?")) return;
     this.setState({ loading: true });
-    fetch(`${this.url}/${key}`, { method: 'DELETE' })
+    fetch(`${this.url}/${key}`, { method: "DELETE" })
       .then((response) => {
         if (response.ok) this.list();
         else
@@ -130,12 +134,12 @@ export class PelisMnt extends Component {
     this.setState({ loading: true });
     // eslint-disable-next-line default-case
     switch (this.state.modo) {
-      case 'add':
+      case "add":
         fetch(`${this.url}`, {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify(elemento),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         })
           .then((response) => {
@@ -149,12 +153,12 @@ export class PelisMnt extends Component {
           })
           .catch((error) => this.setError(error));
         break;
-      case 'edit':
+      case "edit":
         fetch(`${this.url}/${this.idOriginal}`, {
-          method: 'PUT',
+          method: "PUT",
           body: JSON.stringify(elemento),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         })
           .then((response) => {
@@ -175,28 +179,28 @@ export class PelisMnt extends Component {
     if (this.state.loading) return <Esperando />;
     let result = [
       <ErrorMessage
-        key='error'
+        key="error"
         msg={this.state.error}
         onClear={() => this.setState({ error: null })}
       />,
     ];
     switch (this.state.modo) {
-      case 'add':
-      case 'edit':
+      case "add":
+      case "edit":
         result.push(
           <PelisForm
-            key='main'
-            isAdd={this.state.modo === 'add'}
+            key="main"
+            isAdd={this.state.modo === "add"}
             elemento={this.state.elemento}
             onCancel={(e) => this.cancel()}
             onSend={(e) => this.send(e)}
           />
         );
         break;
-      case 'view':
+      case "view":
         result.push(
           <PelisView
-            key='main'
+            key="main"
             elemento={this.state.elemento}
             onCancel={(e) => this.cancel()}
           />
@@ -206,7 +210,7 @@ export class PelisMnt extends Component {
         if (this.state.listado)
           result.push(
             <PelisList
-              key='main'
+              key="main"
               listado={this.state.listado}
               pagina={this.state.pagina}
               paginas={this.state.paginas}
@@ -226,42 +230,42 @@ export class PelisMnt extends Component {
 function PelisList(props) {
   return (
     <>
-      <table className='table table-hover table-striped'>
-        <thead className='table-info'>
+      <table className="table table-hover table-striped">
+        <thead className="table-info">
           <tr>
             <th>Lista de películas</th>
-            <th className='text-end'>
+            <th className="text-end">
               <input
-                type='button'
-                className='btn btn-primary'
-                value='Añadir'
+                type="button"
+                className="btn btn-primary"
+                value="Añadir"
                 onClick={(e) => props.onAdd()}
               />
             </th>
           </tr>
         </thead>
-        <tbody className='table-group-divider'>
+        <tbody className="table-group-divider">
           {props.listado.map((item) => (
             <tr key={item.filmId}>
               <td>{titleCase(item.title)}</td>
-              <td className='text-end'>
-                <div className='btn-group text-end' role='group'>
+              <td className="text-end">
+                <div className="btn-group text-end" role="group">
                   <input
-                    type='button'
-                    className='btn btn-primary'
-                    value='Ver'
+                    type="button"
+                    className="btn btn-primary"
+                    value="Ver"
                     onClick={(e) => props.onView(item.filmId)}
                   />
                   <input
-                    type='button'
-                    className='btn btn-primary'
-                    value='Editar'
+                    type="button"
+                    className="btn btn-primary"
+                    value="Editar"
                     onClick={(e) => props.onEdit(item.filmId)}
                   />
                   <input
-                    type='button'
-                    className='btn btn-danger'
-                    value='Borrar'
+                    type="button"
+                    className="btn btn-danger"
+                    value="Borrar"
                     onClick={(e) => props.onDelete(item.filmId)}
                   />
                 </div>
@@ -280,18 +284,39 @@ function PelisList(props) {
 }
 
 function PelisView({ elemento, onCancel }) {
+  
   return (
-    <div>
+    <div className="container-fluid">
       <p>
         <b>Código:</b> {elemento.filmId}
         <br />
-        <b>Nombre:</b> {elemento.title}
+        <b>Título:</b> {elemento.title}
+        <br />
+        <b>Descripción:</b> {elemento.description}
+        <br />
+        <b>Longitud:</b> {elemento.length}
+        <br />
+        <b>Rating:</b> {elemento.rating}
+        <br />
+        <b>Año de estreno:</b> {elemento.releaseYear}
+        <br />
+        <b>Tiempo alquilado:</b> {elemento.rentalDuration}
+        <br />
+        <b>Ratio alquiler:</b> {elemento.rentalRate}
+        <br />
+        <b>Idioma:</b> {elemento.language}
+        <br />
+        <b>Doblaje:</b> {elemento.languageVO == null||undefined?'No tiene doblaje':elemento.languageVO}
+        <br />
+        <b>Actores:</b> {elemento.actors.join(', ')}
+        <br />
+        <b>Categorías:</b> {elemento.categories}
         <br />
       </p>
       <p>
         <button
-          className='btn btn-primary'
-          type='button'
+          className="btn btn-primary"
+          type="button"
           onClick={(e) => onCancel()}
         >
           Volver
@@ -326,11 +351,11 @@ class PelisForm extends Component {
     if (cntr.name) {
       // eslint-disable-next-line default-case
       switch (cntr.name) {
-        case 'apellidos':
+        case "apellidos":
           cntr.setCustomValidity(
             cntr.value !== cntr.value.toUpperCase()
-              ? 'Debe estar en mayúsculas'
-              : ''
+              ? "Debe estar en mayúsculas"
+              : ""
           );
           break;
       }
@@ -360,13 +385,13 @@ class PelisForm extends Component {
           this.form = tag;
         }}
       >
-        <div className='form-group'>
-          <label htmlFor='id'>Código</label>
+        <div className="form-group">
+          <label htmlFor="id">Código</label>
           <input
-            type='number'
-            className={'form-control' + (this.props.isAdd ? '' : '-plaintext')}
-            id='id'
-            name='id'
+            type="number"
+            className={"form-control" + (this.props.isAdd ? "" : "-plaintext")}
+            id="id"
+            name="id"
             value={this.state.elemento.id}
             onChange={this.handleChange}
             required
@@ -374,32 +399,32 @@ class PelisForm extends Component {
           />
           <ValidationMessage msg={this.state.msgErr.id} />
         </div>
-        <div className='form-group'>
-          <label htmlFor='idioma'>Idioma</label>
+        <div className="form-group">
+          <label htmlFor="idioma">Idioma</label>
           <input
-            type='text'
-            className='form-control'
-            id='idioma'
-            name='idioma'
+            type="text"
+            className="form-control"
+            id="idioma"
+            name="idioma"
             value={this.state.elemento.idioma}
             onChange={this.handleChange}
             required
-            maxLength='20'
+            maxLength="20"
           />
           <ValidationMessage msg={this.state.msgErr.nombre} />
         </div>
-        <div className='form-group'>
+        <div className="form-group">
           <button
-            className='btn btn-primary'
-            type='button'
+            className="btn btn-primary"
+            type="button"
             disabled={this.state.invalid}
             onClick={this.onSend}
           >
             Enviar
           </button>
           <button
-            className='btn btn-primary'
-            type='button'
+            className="btn btn-primary"
+            type="button"
             onClick={this.onCancel}
           >
             Volver
