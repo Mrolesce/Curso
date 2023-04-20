@@ -7,6 +7,7 @@ import React, { Component } from "react";
 import { Card, Contador } from "./componentes";
 import Calculadora from "./calculadoraReact";
 import Muro from "./muro";
+import { PadreFormulario } from "./formulario";
 
 export default class App extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export default class App extends Component {
       },
       { text: "Ejemplos", url: "/ejemplos", componente: <Ejemplos /> },
       { text: "Calculadora", url: "/calculadora", componente: <Calculadora /> },
+      { text: "Formulario", url: "/formulario", componente: <PadreFormulario /> },
       
     ];
   }
