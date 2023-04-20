@@ -8,6 +8,7 @@ import { Card, Contador } from "./componentes";
 import Calculadora from "./calculadoraReact";
 import Muro from "./muro";
 import { PadreFormulario } from "./formulario";
+import { ActoresMnt } from "./componentes/actores";
 
 export default class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class App extends Component {
     };
     this.menu = [
       { text: "Inicio", url: "/", componente: <Home /> },
+      { text: "Actores", url: "/", componente: <ActoresMnt /> },
       { text: "Muro", url: "/muro", componente: <Muro /> },
       { text: "Demos", url: "/demos", componente: <DemoJSX /> },
       {

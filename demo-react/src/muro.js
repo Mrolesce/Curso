@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { ErrorMessage, Esperando } from "./comunes";
+import { ErrorMessage, Esperando } from "./biblioteca/comunes.js";
 
 export default class Muro extends Component {
   constructor(props) {
