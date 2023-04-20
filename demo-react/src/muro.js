@@ -25,6 +25,7 @@ export default class Muro extends Component {
                     ruta={item.download_url}
                     id={item.id}
                     author={item.author}
+                    ultimaPag={this.ultimoPulsado}
                   />
                 </div>
               ))}
@@ -97,7 +98,7 @@ export default class Muro extends Component {
   }
 }
 
-export function Card({ ruta, id, author }) {
+export function Card({ ruta, id, author, ultimaPag }) {
   const [show, setShow] = useState(true);
   return (
     <div className="card mt-4" style={{ width: "18rem" }}>
@@ -116,7 +117,7 @@ export function Card({ ruta, id, author }) {
           <title>Placeholder</title>
           <rect width="100%" height="100%" fill="#868e96" />
           <text x="42.01%" y="50%" fill="#dee2e6" dy=".3em">
-            Foto {+id + 1}
+            {ultimaPag} - {+id + 1}
           </text>
         </svg>
       ) : null}
