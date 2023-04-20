@@ -10,6 +10,7 @@ import Muro from "./muro";
 import { PadreFormulario } from "./formulario";
 import { ActoresMnt } from "./componentes/actores";
 import CategoriasMnt from "./componentes/categorias";
+import { IdiomasMnt } from "./componentes/idiomas";
 
 export default class App extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ export default class App extends Component {
       { text: "Inicio", url: "/", componente: <Home /> },
       { text: "Actores", url: "/", componente: <ActoresMnt /> },
       { text: "Categorias", url: "/", componente: <CategoriasMnt /> },
+      { text: "Idiomas", url: "/", componente: <IdiomasMnt /> },
       { text: "Muro", url: "/muro", componente: <Muro /> },
       { text: "Demos", url: "/demos", componente: <DemoJSX /> },
       {

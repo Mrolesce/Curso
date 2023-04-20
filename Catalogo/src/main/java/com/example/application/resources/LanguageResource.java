@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.LanguageService;
 import com.example.domains.entities.Language;
+import com.example.domains.entities.dtos.ActorDTO;
+import com.example.domains.entities.dtos.ActorShort;
 import com.example.domains.entities.dtos.ElementoDTO;
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -42,6 +47,12 @@ public class LanguageResource {
 		if(sort != null)
 			return (List<Language>)srv.getByProjection(Sort.by(sort), Language.class);
 		return srv.getByProjection(Language.class);
+	}
+	
+	@Hidden
+	@GetMapping(params = "page")
+	public Page<Language> getAll(Pageable pageable) {
+		return srv.getByProjection(pageable, Language.class);
 	}
 	
 	@GetMapping(path = "/{id:\\d+}")
