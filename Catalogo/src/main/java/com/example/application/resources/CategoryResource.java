@@ -23,12 +23,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.CategoryService;
 import com.example.domains.entities.Category;
+import com.example.domains.entities.dtos.ActorDTO;
+import com.example.domains.entities.dtos.ActorShort;
 import com.example.domains.entities.dtos.ElementoDTO;
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -42,8 +45,14 @@ public class CategoryResource {
 	@GetMapping
 	public List<Category> getAll(@RequestParam(required = false) String sort) {
 		if(sort != null)
-			return (List<Category>) srv.getByProjection(Sort.by(sort), Category.class);
+			return (List<Category>)srv.getByProjection(Sort.by(sort), Category.class);
 		return srv.getByProjection(Category.class);
+	}
+	
+	@Hidden
+	@GetMapping(params = "page")
+	public Page<Category> getAll(Pageable pageable) {
+		return srv.getByProjection(pageable, Category.class);
 	}
 	
 	@PostMapping
@@ -70,10 +79,6 @@ public class CategoryResource {
 		return item.get();
 	}
 	
-	@GetMapping(params = "page")
-	public Page<Category> getAll(Pageable pageable) {
-		return srv.getByProjection(pageable, Category.class);
-	}
 	
 	@GetMapping(path = "/{id}/pelis")
 	@Transactional
