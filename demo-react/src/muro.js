@@ -128,7 +128,7 @@ export function Card({ ruta, id, author }) {
           className="btn btn-primary"
           onClick={() => setShow(!show)}
         >
-          Mostrar foto
+          {show?'Mostrar':'Esconder'} foto
         </button>
       </div>
     </div>
