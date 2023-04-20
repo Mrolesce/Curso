@@ -11,6 +11,7 @@ import { PadreFormulario } from "./formulario";
 import { ActoresMnt } from "./componentes/actores";
 import CategoriasMnt from "./componentes/categorias";
 import { IdiomasMnt } from "./componentes/idiomas";
+import { PelisMnt } from "./componentes/pelis";
 
 export default class App extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ export default class App extends Component {
     };
     this.menu = [
       { text: "Inicio", url: "/", componente: <Home /> },
+      { text: "Películas", url: "/", componente: <PelisMnt /> },
       { text: "Actores", url: "/", componente: <ActoresMnt /> },
       { text: "Categorias", url: "/", componente: <CategoriasMnt /> },
       { text: "Idiomas", url: "/", componente: <IdiomasMnt /> },
@@ -50,9 +52,8 @@ export default class App extends Component {
           menu={this.menu}
           onSelectMenu={(indice) => this.setState({ main: indice })}
         />
-        <main className="container-fluid">
           {this.menu[this.state.main].componente}
-        </main>
+
         <Pie />
       </>
     );
@@ -101,17 +102,6 @@ function Menu({ menu, onSelectMenu }) {
               </li>
             ))}
           </ul>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
         </div>
       </div>
     </nav>

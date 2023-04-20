@@ -4,6 +4,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import './general.css'
+import './biblioteca/comunes.css'
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
