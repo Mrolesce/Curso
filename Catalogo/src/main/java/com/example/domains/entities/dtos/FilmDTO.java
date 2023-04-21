@@ -33,8 +33,8 @@ public class FilmDTO {
 	@Size(min=2, max = 128)
 	private String title;
 	@NotNull
-	private String language;
-	private String languageVO;
+	private String languageId;
+	private String languageVOId;
 	private List<String> actors = new ArrayList<String>();
 	private List<String> categories = new ArrayList<String>();
 	//List<Map.Entry<Integer, String>> actores = new ArrayList<>();
@@ -52,7 +52,7 @@ public class FilmDTO {
 	            source.getTitle(),
 	            source.getLanguage() == null ? null : source.getLanguage().getName(),
 	            source.getLanguageVO() == null ? null : source.getLanguageVO().getName(),
-	            source.getActors().stream().map(item -> item.getFirstName())
+	            source.getActors().stream().map(item -> item.getFirstName()+" "+item.getLastName())
 	                    .collect(Collectors.toList()),
 	            source.getCategories().stream().map(item -> item.getName())
 	                    .collect(Collectors.toList())

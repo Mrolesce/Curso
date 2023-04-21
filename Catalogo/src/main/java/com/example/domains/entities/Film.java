@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.validator.constraints.Length;
+
 
 /**
  * The persistent class for the film database table.
@@ -95,6 +97,7 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 	@Positive
 	@JsonProperty("length")
+	@Size(max=5)
 	private Integer length;
 
 	@Convert(converter = RatingConverter.class)

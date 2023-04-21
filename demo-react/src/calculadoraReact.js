@@ -62,7 +62,7 @@ export default class Calculadora extends Component {
       <div className="container" id="calculadora">
         <div className="row">
           <div className="colz">
-            <output>{this.state.pantalla}</output>
+            <output className="outout">{this.state.pantalla}</output>
           </div>
         </div>
         <div className="row">

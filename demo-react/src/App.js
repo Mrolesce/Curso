@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 // import { eventWrapper } from '@testing-library/user-event/dist/utils';
 
 import React, { Component } from "react";
-import { Card, Contador } from "./componentes";
+import { Card, Contador, Coordenadas } from "./componentes";
 import Calculadora from "./calculadoraReact";
 import Muro from "./muro";
 import { PadreFormulario } from "./formulario";
@@ -21,8 +21,8 @@ export default class App extends Component {
       main: 0,
     };
     this.menu = [
-      { text: "Inicio", url: "/", componente: <Home /> },
       { text: "Películas", url: "/", componente: <PelisMnt /> },
+      { text: "Inicio", url: "/", componente: <Home /> },
       { text: "Actores", url: "/", componente: <ActoresMnt /> },
       { text: "Categorias", url: "/", componente: <CategoriasMnt /> },
       { text: "Idiomas", url: "/", componente: <IdiomasMnt /> },
@@ -89,7 +89,7 @@ function Menu({ menu, onSelectMenu }) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             {menu.map((item, index) => (
-              <li className="nav-item">
+              <li key={index} className="nav-item">
                 <a
                   href="/#"
                   className="nav-link"
@@ -182,6 +182,7 @@ export class Ejemplos extends Component {
 }
 class DemoJSX extends Component {
   render() {
+    <Coordenadas/>
     let nombre = "<b>Mundo</b>";
     let estilo = "App-link";
     let saluda = <span>Hola {nombre}!</span>;
