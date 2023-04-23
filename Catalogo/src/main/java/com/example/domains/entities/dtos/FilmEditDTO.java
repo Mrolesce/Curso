@@ -34,8 +34,8 @@ public class FilmEditDTO {
 	@Size(min=2, max = 128)
 	private String title;
 	@NotNull
-	private Integer languageId;
-	private Integer languageVOId;
+	private Integer language;
+	private Integer languageVO;
 	private List<Integer> actors = new ArrayList<Integer>();
 	private List<Integer> categories = new ArrayList<Integer>();
 
@@ -64,8 +64,8 @@ public class FilmEditDTO {
 				source.getTitle(),
 				source.getDescription(),
 				source.getReleaseYear(),
-				source.getLanguageId() == null ? null : new Language(source.getLanguageId()),
-				source.getLanguageVOId() == null ? null : new Language(source.getLanguageVOId()),
+				source.getLanguage() == null ? null : new Language(source.getLanguage()),
+				source.getLanguageVO() == null ? null : new Language(source.getLanguageVO()),
 				source.getRentalDuration(),
 				source.getRentalRate(),
 				source.getLength(),

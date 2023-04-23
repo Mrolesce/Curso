@@ -33,8 +33,8 @@ public class FilmDTO {
 	@Size(min=2, max = 128)
 	private String title;
 	@NotNull
-	private String languageId;
-	private String languageVOId;
+	private String language;
+	private String languageVO;
 	private List<String> actors = new ArrayList<String>();
 	private List<String> categories = new ArrayList<String>();
 	//List<Map.Entry<Integer, String>> actores = new ArrayList<>();

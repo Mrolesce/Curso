@@ -4,6 +4,7 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -97,7 +98,6 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 	@Positive
 	@JsonProperty("length")
-	@Size(max=5)
 	private Integer length;
 
 	@Convert(converter = RatingConverter.class)

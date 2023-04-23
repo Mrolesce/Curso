@@ -12,8 +12,7 @@ export class PelisMnt extends Component {
     this.state = {
       modo: "list",
       listado: null,
-      elemento: null,
-      idiomas: null,
+      elemento: undefined,
       error: null,
       loading: true,
       pagina: 0,
@@ -56,18 +55,18 @@ export class PelisMnt extends Component {
     this.setState({
       modo: "add",
       elemento: {
-        filmId: 1,
+        filmId: 0,
         description: "",
         length: 0,
-        rating: "NC-17",
-        releaseYear: "2018",
-        rentalDuration: 7,
-        rentalRate: 2.99,
-        replacementCost: 18.99,
+        rating: "",
+        releaseYear: "",
+        rentalDuration: 0,
+        rentalRate: 0,
+        replacementCost: 0,
         title: "",
-        languageId: 1,
-        languageVOId: null,
-        actors: {},
+        language: "",
+        languageVO: "",
+        actors: [],
         categories: [],
       },
     });
@@ -338,7 +337,13 @@ function PelisView({ elemento, onCancel }) {
 class PelisForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { elemento: props.elemento, msgErr: [], invalid: false };
+    this.state = {
+      elemento: props.elemento,
+      msgErr: [],
+      invalid: false,
+      idiomas: [],
+      actoresState: [],
+    };
     this.handleChange = this.handleChange.bind(this);
     this.onSend = () => {
       if (this.props.onSend) this.props.onSend(this.state.elemento);
@@ -350,6 +355,15 @@ class PelisForm extends Component {
   handleChange(event) {
     const cmp = event.target.name;
     const valor = event.target.value;
+
+    if (valor === "No language") {
+      this.setState((prevState) => ({
+        elemento: {
+          ...prevState.elemento,
+          languageVO: undefined,
+        },
+      }));
+    }
     this.setState((prev) => {
       prev.elemento[cmp] = valor;
       return { elemento: prev.elemento };
@@ -388,6 +402,50 @@ class PelisForm extends Component {
   componentDidMount() {
     this.validar();
     this.loadIdiomas();
+    this.loadActores();
+  }
+  loadIdiomas() {
+    var requestOptions = {
+      method: "GET",
+    };
+
+    fetch("http://localhost:8080/catalogo/api/lenguajes", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ idiomas: data });
+        let idiomaFind = data.find(
+          (a) => a.idioma === this.state.elemento.language
+        );
+        if (idiomaFind) {
+          this.setState((prev) => {
+            return { elemento: { ...prev.elemento, language: +idiomaFind.id } };
+          });
+        }
+        console.log(this.state.elemento);
+      })
+      .catch((error) => console.log("error", error));
+  }
+  loadActores() {
+    var requestOptions = {
+      method: "GET",
+    };
+
+    fetch("http://localhost:8080/catalogo/api/actores/v1", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        let actoresExistentes = [];
+
+        for (let ac of data) {
+          if (this.state.actoresState.includes(ac.nombre)) {
+            actoresExistentes.push(ac.id);
+          }
+        }
+        this.setState((prev) => {
+          prev.elemento.actors = actoresExistentes;
+          return { actoresState: data, elemento: prev.elemento };
+        });
+      })
+      .catch((error) => console.log("error", error));
   }
   render() {
     let ratingsPeli = ["G", "PG", "PG-13", "R", "NC-17"];
@@ -502,7 +560,6 @@ class PelisForm extends Component {
             name="rentalRate"
             value={this.state.elemento.rentalRate}
             onChange={this.handleChange}
-            min={0}
           />
           <ValidationMessage msg={this.state.msgErr.rentalRate} />
         </div>
@@ -515,7 +572,6 @@ class PelisForm extends Component {
             name="replacementCost"
             value={this.state.elemento.replacementCost}
             onChange={this.handleChange}
-            min={0}
           />
           <ValidationMessage msg={this.state.msgErr.rentalRate} />
         </div>
@@ -525,7 +581,7 @@ class PelisForm extends Component {
             id="language"
             name="language"
             onChange={this.handleChange}
-            value={+this.state.elemento.language}
+            value={this.state.elemento.language}
           >
             {this.state.idiomas &&
               this.state.idiomas.map((item) => (
@@ -534,10 +590,61 @@ class PelisForm extends Component {
                 </option>
               ))}
           </select>
-          {JSON.stringify(this.state.elemento.language)}
+          {JSON.stringify(typeof this.state.elemento.language)}
           <ValidationMessage msg={this.state.msgErr.language} />
         </div>
-
+        <div className="form-group">
+          <label htmlFor="languageVO">Idioma VO</label>
+          <select
+            id="languageVO"
+            name="languageVO"
+            onChange={this.handleChange}
+            value={
+              this.state.elemento.languageVO == null
+                ? "No language"
+                : this.state.elemento.languageVO
+            }
+          >
+            <option value={"No language"}>No language</option>
+            {this.state.idiomas &&
+              this.state.idiomas.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.idioma}
+                </option>
+              ))}
+          </select>
+          {JSON.stringify(this.state.elemento.languageVO)}
+          <ValidationMessage msg={this.state.msgErr.languageVO} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="actors">Actores</label>
+          <select
+            id="actors"
+            style={{height: '200px'}}
+            name="actors"
+            onChange={this.handleChange}
+            value={this.state.elemento.actors}
+            multiple={true}
+          >
+            <option value='Option 1'>
+              Option 1
+            </option>
+            <option value='Option 2'>
+              Option 2
+            </option>
+            <option value='Option 3'>
+              Option 3
+            </option>
+            {/* {this.state.actoresState &&
+              this.state.actoresState.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.nombre}
+                </option>
+              ))} */}
+          </select>
+          {JSON.stringify(this.state.elemento.actors)}
+          <ValidationMessage msg={this.state.msgErr.actors} />
+        </div>
         <div className="form-group">
           <button
             className="btn btn-primary"
@@ -558,17 +665,8 @@ class PelisForm extends Component {
       </form>
     );
   }
-  loadIdiomas() {
-    var requestOptions = {
-      method: "GET",
-      redirect: "follow",
-    };
 
-    fetch("http://localhost:8080/catalogo/api/lenguajes", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        let idiomaFind = data.find((a) => a.idioma === this.state.elemento.language)
-          this.setState({ idiomas: data, elemento: {language: idiomaFind.id} })})
-      .catch((error) => console.log("error", error));
-  }
+  /*  loadActores(){
+
+  } */
 }
