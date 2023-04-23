@@ -343,6 +343,7 @@ class PelisForm extends Component {
       invalid: false,
       idiomas: [],
       actoresState: [],
+      categoriesState: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSend = () => {
@@ -356,20 +357,34 @@ class PelisForm extends Component {
     const cmp = event.target.name;
     const valor = event.target.value;
 
-    if (valor === "No language") {
+    if (valor === "No language" && cmp === 'languageVO') {
       this.setState((prevState) => ({
         elemento: {
           ...prevState.elemento,
-          languageVO: undefined,
+          languageVO: null,
         },
       }));
+    }else if(cmp === "actors"){
+      let valueAc = Array.from(event.target.selectedOptions, option => option.value);
+      this.setState((prev) => {
+        prev.elemento[cmp] = valueAc;
+        return { elemento: prev.elemento };
+      });
+    }else if(cmp === "categories"){
+      let valueCa = Array.from(event.target.selectedOptions, option => option.value);
+      this.setState((prev) => {
+        prev.elemento[cmp] = valueCa;
+        return { elemento: prev.elemento };
+      });
+    }else{
+      this.setState((prev) => {
+        prev.elemento[cmp] = valor;
+        return { elemento: prev.elemento };
+      });
     }
-    this.setState((prev) => {
-      prev.elemento[cmp] = valor;
-      return { elemento: prev.elemento };
-    });
+    
     this.validar();
-    console.log(event.target.value);
+    console.log(this.state.elemento);
   }
   validarCntr(cntr) {
     if (cntr.name) {
@@ -403,6 +418,7 @@ class PelisForm extends Component {
     this.validar();
     this.loadIdiomas();
     this.loadActores();
+    this.loadCategorias();
   }
   loadIdiomas() {
     var requestOptions = {
@@ -434,10 +450,9 @@ class PelisForm extends Component {
       .then((response) => response.json())
       .then((data) => {
         let actoresExistentes = [];
-
         for (let ac of data) {
-          if (this.state.actoresState.includes(ac.nombre)) {
-            actoresExistentes.push(ac.id);
+          if (this.state.elemento.actors.includes(ac.nombre) || this.state.elemento.actors.includes(ac.actorId) ) {
+            actoresExistentes.push(ac.actorId);
           }
         }
         this.setState((prev) => {
@@ -446,6 +461,28 @@ class PelisForm extends Component {
         });
       })
       .catch((error) => console.log("error", error));
+  }
+  loadCategorias(){
+    var requestOptions = {
+      method: 'GET',
+    };
+    
+    fetch("http://localhost:8080/catalogo/api/categorias/v1?sort=name", requestOptions)
+      .then(response => response.json())
+      .then((data) => {
+        console.log(data)
+        let categoriasExistentes = [];
+        for (let ca of data) {
+          if (this.state.elemento.categories.includes(ca.categoria) || this.state.elemento.categories.includes(ca.id) ) {
+            categoriasExistentes.push(ca.id);
+          }
+        }
+        this.setState((prev) => {
+          prev.elemento.categories = categoriasExistentes;
+          return { categoriesState: data, elemento: prev.elemento };
+        });
+      })
+      .catch(error => console.log('error', error));
   }
   render() {
     let ratingsPeli = ["G", "PG", "PG-13", "R", "NC-17"];
@@ -600,7 +637,7 @@ class PelisForm extends Component {
             name="languageVO"
             onChange={this.handleChange}
             value={
-              this.state.elemento.languageVO == null
+              this.state.elemento.languageVO == null || this.state.elemento.languageVO === undefined || this.state.elemento.languageVO === []
                 ? "No language"
                 : this.state.elemento.languageVO
             }
@@ -626,23 +663,36 @@ class PelisForm extends Component {
             value={this.state.elemento.actors}
             multiple={true}
           >
-            <option value='Option 1'>
-              Option 1
-            </option>
-            <option value='Option 2'>
-              Option 2
-            </option>
-            <option value='Option 3'>
-              Option 3
-            </option>
-            {/* {this.state.actoresState &&
+           
+            {this.state.actoresState &&
               this.state.actoresState.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.nombre}
+                <option key={item.actorId} value={item.actorId}>
+                  {item.actorId+' '+item.nombre}
                 </option>
-              ))} */}
+              ))}
           </select>
           {JSON.stringify(this.state.elemento.actors)}
+          <ValidationMessage msg={this.state.msgErr.actors} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="actors">Categories</label>
+          <select
+            id="categories"
+            style={{height: '200px'}}
+            name="categories"
+            onChange={this.handleChange}
+            value={this.state.elemento.categories}
+            multiple={true}
+          >
+           
+            {this.state.categoriesState &&
+              this.state.categoriesState.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.id+' '+item.categoria}
+                </option>
+              ))}
+          </select>
+          {JSON.stringify(this.state.elemento.categories)}
           <ValidationMessage msg={this.state.msgErr.actors} />
         </div>
         <div className="form-group">
