@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle'
 import './general.css'
 import './biblioteca/comunes.css'
+import "primereact/resources/themes/lara-light-indigo/theme.css"; 
+import "primereact/resources/primereact.min.css";
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';

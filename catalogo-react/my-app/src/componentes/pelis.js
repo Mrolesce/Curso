@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import Multiselect from "multiselect-react-dropdown";
+
 import {
   ValidationMessage,
   ErrorMessage,
   Esperando,
   PaginacionCmd as Paginacion,
 } from "../biblioteca/comunes";
-import { titleCase } from "../biblioteca/formateadores";
 export class PelisMnt extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +28,25 @@ export class PelisMnt extends Component {
   setError(msg) {
     this.setState({ error: msg, loading: false });
   }
-
+  loadImgs(num) {
+    let pagina = this.state.pagina;
+    if (num || num === 0) pagina = num;
+    this.setState({ loading: true });
+    fetch(`https://picsum.photos/v2/list?page=${pagina}&limit=100`)
+      .then((response) => {
+        response.json().then(
+          response.ok
+            ? (data) => {
+                this.setState({
+                  modo: "list",
+                  imgs: data,
+                });
+              }
+            : (error) => this.setError(`${error.status}: ${error.error}`)
+        );
+      })
+      .catch((error) => this.setError(error));
+  }
   list(num) {
     let pagina = this.state.pagina;
     if (num || num === 0) pagina = num;
@@ -58,13 +77,13 @@ export class PelisMnt extends Component {
         filmId: 0,
         description: "",
         length: 0,
-        rating: "",
+        rating: "G",
         releaseYear: "",
         rentalDuration: 0,
         rentalRate: 0,
         replacementCost: 0,
         title: "",
-        language: "",
+        language: "1",
         languageVO: "",
         actors: [],
         categories: [],
@@ -125,10 +144,12 @@ export class PelisMnt extends Component {
   }
   componentDidMount() {
     this.list(0);
+    this.loadImgs(0);
   }
 
   cancel() {
     this.list();
+    this.loadImgs();
   }
   send(elemento) {
     this.setState({ loading: true });
@@ -194,6 +215,7 @@ export class PelisMnt extends Component {
             elemento={this.state.elemento}
             onCancel={(e) => this.cancel()}
             onSend={(e) => this.send(e)}
+            onDelete={(key) => this.delete(key)}
           />
         );
         break;
@@ -203,6 +225,7 @@ export class PelisMnt extends Component {
             key="main"
             elemento={this.state.elemento}
             onCancel={(e) => this.cancel()}
+            onEdit={(key) => this.edit(key)}
           />
         );
         break;
@@ -212,13 +235,15 @@ export class PelisMnt extends Component {
             <PelisList
               key="main"
               listado={this.state.listado}
+              imgs={this.state.imgs}
               pagina={this.state.pagina}
               paginas={this.state.paginas}
               onAdd={(e) => this.add()}
               onView={(key) => this.view(key)}
               onEdit={(key) => this.edit(key)}
-              onDelete={(key) => this.delete(key)}
-              onChangePage={(num) => this.list(num)}
+              onChangePage={(num) => {
+                this.list(num);
+              }}
             />
           );
         break;
@@ -230,66 +255,64 @@ export class PelisMnt extends Component {
 function PelisList(props) {
   return (
     <>
-      <table className="table table-hover table-striped">
-        <thead className="table-info">
-          <tr>
-            <th>Lista de películas</th>
-            <th className="text-end">
-              <input
-                type="button"
-                className="btn btn-primary"
-                value="Añadir"
-                onClick={(e) => props.onAdd()}
-              />
-            </th>
-          </tr>
-        </thead>
-        <tbody className="table-group-divider">
-          {props.listado.map((item) => (
-            <tr key={item.filmId}>
-              <td>{titleCase(item.title)}</td>
-              <td className="text-end">
-                <div className="btn-group text-end" role="group">
-                  <input
-                    type="button"
-                    className="btn btn-primary"
-                    value="Ver"
-                    onClick={(e) => props.onView(item.filmId)}
+      <div className="container-fluid">
+        <input
+          type="button"
+          className="btn btn-primary mt-3"
+          value="Añadir película"
+          onClick={(e) => props.onAdd()}
+        />
+        <div className="row">
+          <div className="row"></div>
+
+          {props.imgs &&
+            props.listado &&
+            props.listado.map((item, index) => (
+              <div className="col-sm mt-3">
+                <div className="card" style={{ width: "18rem" }}>
+                  <img
+                    className="card-img-top"
+                    src={
+                      props.imgs[index].download_url == null
+                        ? null
+                        : props.imgs[index].download_url
+                    }
+                    alt="Peli"
                   />
-                  <input
-                    type="button"
-                    className="btn btn-primary"
-                    value="Editar"
-                    onClick={(e) => props.onEdit(item.filmId)}
-                  />
-                  <input
-                    type="button"
-                    className="btn btn-danger"
-                    value="Borrar"
-                    onClick={(e) => props.onDelete(item.filmId)}
-                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{item.title}</h5>
+                    <p className="card-text">Película con id: {item.filmId}</p>
+                    <input
+                      type="button"
+                      className="btn btn-primary"
+                      value="Ver"
+                      onClick={(e) => props.onView(item.filmId)}
+                    />
+                  </div>
                 </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Paginacion
-        actual={props.pagina}
-        total={props.paginas}
-        onChange={(num) => props.onChangePage(num)}
-      />
+              </div>
+            ))}
+        </div>
+      </div>
+      <div className="container-fluid mt-3">
+        <Paginacion
+          actual={props.pagina}
+          total={props.paginas}
+          onChange={(num) => props.onChangePage(num)}
+        />
+      </div>
     </>
   );
 }
 
-function PelisView({ elemento, onCancel }) {
+function PelisView({ elemento, onCancel, onEdit }) {
   return (
     <div className="container-fluid">
-      <p>
+      <div>
         <b>Código:</b> {elemento.filmId}
         <br />
-        <b>Título:</b> {elemento.title}
+        <b>Título: </b>
+        {elemento.title}
         <br />
         <b>Descripción:</b> {elemento.description}
         <br />
@@ -317,9 +340,22 @@ function PelisView({ elemento, onCancel }) {
             <li>{item}</li>
           ))}
         </ul>
+        <b>Categorías:</b>
+        <ul>
+          {" "}
+          {elemento.categories.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
         <br />
-        <b>Categorías:</b> {elemento.categories}
-        <br />
+      </div>
+      <p>
+        <input
+          type="button"
+          className="btn btn-primary"
+          value="Editar"
+          onClick={(e) => onEdit(elemento.filmId)}
+        />
       </p>
       <p>
         <button
@@ -343,7 +379,9 @@ class PelisForm extends Component {
       invalid: false,
       idiomas: [],
       actoresState: [],
-      categoriesState: []
+      categoriesState: [],
+      selectedValueActor: {},
+      selectedValueCategory: {},
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSend = () => {
@@ -352,61 +390,56 @@ class PelisForm extends Component {
     this.onCancel = () => {
       if (this.props.onCancel) this.props.onCancel();
     };
+    this.onDelete = () => {
+      if (this.props.onDelete) this.props.onDelete(this.state.elemento.filmId);
+    };
   }
   handleChange(event) {
     const cmp = event.target.name;
     const valor = event.target.value;
 
-    if (valor === "No language" && cmp === 'languageVO') {
+    if (valor === "No language" && cmp === "languageVO") {
       this.setState((prevState) => ({
         elemento: {
           ...prevState.elemento,
           languageVO: null,
         },
       }));
-    }else if(cmp === "actors"){
-      let valueAc = Array.from(event.target.selectedOptions, option => option.value);
+    } else if (cmp === "actors") {
+      let valueAc = Array.from(
+        event.target.selectedOptions,
+        (option) => option.value
+      );
       this.setState((prev) => {
         prev.elemento[cmp] = valueAc;
         return { elemento: prev.elemento };
       });
-    }else if(cmp === "categories"){
-      let valueCa = Array.from(event.target.selectedOptions, option => option.value);
+    } else if (cmp === "categories") {
+      let valueCa = Array.from(
+        event.target.selectedOptions,
+        (option) => option.value
+      );
       this.setState((prev) => {
         prev.elemento[cmp] = valueCa;
         return { elemento: prev.elemento };
       });
-    }else{
+    } else {
       this.setState((prev) => {
         prev.elemento[cmp] = valor;
         return { elemento: prev.elemento };
       });
     }
-    
+
     this.validar();
     console.log(this.state.elemento);
   }
-  validarCntr(cntr) {
-    if (cntr.name) {
-      // eslint-disable-next-line default-case
-      switch (cntr.name) {
-        case "apellidos":
-          cntr.setCustomValidity(
-            cntr.value !== cntr.value.toUpperCase()
-              ? "Debe estar en mayúsculas"
-              : ""
-          );
-          break;
-      }
-    }
-  }
+
   validar() {
     if (this.form) {
       const errors = {};
       let invalid = false;
       for (var cntr of this.form.elements) {
         if (cntr.name) {
-          this.validarCntr(cntr);
           errors[cntr.name] = cntr.validationMessage;
           invalid = invalid || !cntr.validity.valid;
         }
@@ -450,273 +483,328 @@ class PelisForm extends Component {
       .then((response) => response.json())
       .then((data) => {
         let actoresExistentes = [];
+        let actoresNames = [];
         for (let ac of data) {
-          if (this.state.elemento.actors.includes(ac.nombre) || this.state.elemento.actors.includes(ac.actorId) ) {
+          if (
+            this.state.elemento.actors.includes(ac.nombre) ||
+            this.state.elemento.actors.includes(ac.actorId)
+          ) {
+            actoresNames.push({ actorId: ac.actorId, nombre: ac.nombre });
             actoresExistentes.push(ac.actorId);
           }
         }
         this.setState((prev) => {
           prev.elemento.actors = actoresExistentes;
-          return { actoresState: data, elemento: prev.elemento };
+          return {
+            actoresState: data,
+            elemento: prev.elemento,
+            selectedValueActor: actoresNames,
+          };
         });
       })
       .catch((error) => console.log("error", error));
   }
-  loadCategorias(){
+  loadCategorias() {
     var requestOptions = {
-      method: 'GET',
+      method: "GET",
     };
-    
-    fetch("http://localhost:8080/catalogo/api/categorias/v1?sort=name", requestOptions)
-      .then(response => response.json())
+
+    fetch(
+      "http://localhost:8080/catalogo/api/categorias/v1?sort=name",
+      requestOptions
+    )
+      .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
         let categoriasExistentes = [];
+        let categoriasNombre = [];
         for (let ca of data) {
-          if (this.state.elemento.categories.includes(ca.categoria) || this.state.elemento.categories.includes(ca.id) ) {
+          if (
+            this.state.elemento.categories.includes(ca.categoria) ||
+            this.state.elemento.categories.includes(ca.id)
+          ) {
+            categoriasNombre.push({ id: ca.id, categoria: ca.categoria });
             categoriasExistentes.push(ca.id);
           }
         }
         this.setState((prev) => {
           prev.elemento.categories = categoriasExistentes;
-          return { categoriesState: data, elemento: prev.elemento };
+          return {
+            categoriesState: data,
+            elemento: prev.elemento,
+            selectedValueCategory: categoriasNombre
+          };
         });
       })
-      .catch(error => console.log('error', error));
+      .catch((error) => console.log("error", error));
   }
   render() {
     let ratingsPeli = ["G", "PG", "PG-13", "R", "NC-17"];
     /* this.elemento.language.find(v => v) */
     return (
-      <form
-        ref={(tag) => {
-          this.form = tag;
-        }}
-      >
-        <div className="form-group">
-          <label htmlFor="filmId">Código</label>
-          <input
-            type="number"
-            className={"form-control" + (this.props.isAdd ? "" : "-plaintext")}
-            id="filmId"
-            name="filmId"
-            value={this.state.elemento.filmId}
-            onChange={this.handleChange}
-            required
-            readOnly={!this.props.isAdd}
-          />
-          <ValidationMessage msg={this.state.msgErr.id} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="title">Título</label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            name="title"
-            value={this.state.elemento.title}
-            onChange={this.handleChange}
-            required
-            minLength={2}
-            maxLength={128}
-          />
-          <ValidationMessage msg={this.state.msgErr.title} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Descripción</label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            name="description"
-            value={this.state.elemento.description}
-            onChange={this.handleChange}
-          />
-          <ValidationMessage msg={this.state.msgErr.description} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Longitud</label>
-          <input
-            type="number"
-            className="form-control"
-            id="length"
-            name="length"
-            value={this.state.elemento.length}
-            onChange={this.handleChange}
-            maxLength="5"
-          />
-          <ValidationMessage msg={this.state.msgErr.length} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Rating</label>
-          <select
-            id="rating"
-            name="rating"
-            onChange={this.handleChange}
-            value={this.state.elemento.rating}
-          >
-            {ratingsPeli.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-          {this.state.elemento.rating}
-          <ValidationMessage msg={this.state.msgErr.rating} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="releaseYear">Año de estreno</label>
-          <input
-            type="number"
-            className="form-control"
-            id="releaseYear"
-            name="releaseYear"
-            value={this.state.elemento.releaseYear}
-            onChange={this.handleChange}
-            min={1895}
-          />
-          <ValidationMessage msg={this.state.msgErr.releaseYear} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="rentalDuration">Duración de alquilado</label>
-          <input
-            type="number"
-            className="form-control"
-            id="rentalDuration"
-            name="rentalDuration"
-            value={this.state.elemento.rentalDuration}
-            onChange={this.handleChange}
-            min={0}
-          />
-          <ValidationMessage msg={this.state.msgErr.rentalDuration} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="rentalRate">Ratio alquiler</label>
-          <input
-            type="number"
-            className="form-control"
-            id="rentalRate"
-            name="rentalRate"
-            value={this.state.elemento.rentalRate}
-            onChange={this.handleChange}
-          />
-          <ValidationMessage msg={this.state.msgErr.rentalRate} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="replacementCost">Coste de reemplazo</label>
-          <input
-            type="number"
-            className="form-control"
-            id="replacementCost"
-            name="replacementCost"
-            value={this.state.elemento.replacementCost}
-            onChange={this.handleChange}
-          />
-          <ValidationMessage msg={this.state.msgErr.rentalRate} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="language">Idioma</label>
-          <select
-            id="language"
-            name="language"
-            onChange={this.handleChange}
-            value={this.state.elemento.language}
-          >
-            {this.state.idiomas &&
-              this.state.idiomas.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.idioma}
-                </option>
+      <div className="container-fluid">
+        <form
+          ref={(tag) => {
+            this.form = tag;
+          }}
+        >
+          <div className="form-group">
+            <label htmlFor="filmId">Código</label>
+            <input
+              type="number"
+              className={
+                "form-control" + (this.props.isAdd ? "" : "-plaintext")
+              }
+              id="filmId"
+              name="filmId"
+              value={this.state.elemento.filmId}
+              onChange={this.handleChange}
+              required
+              readOnly={!this.props.isAdd}
+            />
+            <ValidationMessage msg={this.state.msgErr.id} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="title">Título</label>
+            <input
+              type="text"
+              className="form-control"
+              id="title"
+              name="title"
+              value={this.state.elemento.title}
+              onChange={this.handleChange}
+              required
+              minLength={2}
+              maxLength={128}
+            />
+            <ValidationMessage msg={this.state.msgErr.title} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Descripción</label>
+            <input
+              type="text"
+              className="form-control"
+              id="description"
+              name="description"
+              value={this.state.elemento.description}
+              onChange={this.handleChange}
+            />
+            <ValidationMessage msg={this.state.msgErr.description} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Longitud</label>
+            <input
+              type="number"
+              className="form-control"
+              id="length"
+              name="length"
+              value={this.state.elemento.length}
+              onChange={this.handleChange}
+              maxLength="5"
+            />
+            <ValidationMessage msg={this.state.msgErr.length} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Rating</label>
+            <select
+              id="rating"
+              name="rating"
+              onChange={this.handleChange}
+              value={
+                this.state.elemento.rating === ""
+                  ? "G"
+                  : this.state.elemento.rating
+              }
+            >
+              {ratingsPeli.map((item) => (
+                <option key={item}>{item}</option>
               ))}
-          </select>
-          {JSON.stringify(typeof this.state.elemento.language)}
-          <ValidationMessage msg={this.state.msgErr.language} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="languageVO">Idioma VO</label>
-          <select
-            id="languageVO"
-            name="languageVO"
-            onChange={this.handleChange}
-            value={
-              this.state.elemento.languageVO == null || this.state.elemento.languageVO === undefined || this.state.elemento.languageVO === []
-                ? "No language"
-                : this.state.elemento.languageVO
-            }
-          >
-            <option value={"No language"}>No language</option>
-            {this.state.idiomas &&
-              this.state.idiomas.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.idioma}
-                </option>
-              ))}
-          </select>
-          {JSON.stringify(this.state.elemento.languageVO)}
-          <ValidationMessage msg={this.state.msgErr.languageVO} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="actors">Actores</label>
-          <select
-            id="actors"
-            style={{height: '200px'}}
-            name="actors"
-            onChange={this.handleChange}
-            value={this.state.elemento.actors}
-            multiple={true}
-          >
-           
-            {this.state.actoresState &&
-              this.state.actoresState.map((item) => (
-                <option key={item.actorId} value={item.actorId}>
-                  {item.actorId+' '+item.nombre}
-                </option>
-              ))}
-          </select>
-          {JSON.stringify(this.state.elemento.actors)}
-          <ValidationMessage msg={this.state.msgErr.actors} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="actors">Categories</label>
-          <select
-            id="categories"
-            style={{height: '200px'}}
-            name="categories"
-            onChange={this.handleChange}
-            value={this.state.elemento.categories}
-            multiple={true}
-          >
-           
-            {this.state.categoriesState &&
-              this.state.categoriesState.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.id+' '+item.categoria}
-                </option>
-              ))}
-          </select>
-          {JSON.stringify(this.state.elemento.categories)}
-          <ValidationMessage msg={this.state.msgErr.actors} />
-        </div>
-        <div className="form-group">
-          <button
-            className="btn btn-primary"
-            type="button"
-            disabled={this.state.invalid}
-            onClick={this.onSend}
-          >
-            Enviar
-          </button>
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={this.onCancel}
-          >
-            Volver
-          </button>
-        </div>
-      </form>
+            </select>
+            {this.state.elemento.rating}
+            <ValidationMessage msg={this.state.msgErr.rating} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="releaseYear">Año de estreno</label>
+            <input
+              type="number"
+              className="form-control"
+              id="releaseYear"
+              name="releaseYear"
+              value={this.state.elemento.releaseYear}
+              onChange={this.handleChange}
+              min={1895}
+            />
+            <ValidationMessage msg={this.state.msgErr.releaseYear} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="rentalDuration">Duración de alquilado</label>
+            <input
+              type="number"
+              className="form-control"
+              id="rentalDuration"
+              name="rentalDuration"
+              value={this.state.elemento.rentalDuration}
+              onChange={this.handleChange}
+              min={0}
+            />
+            <ValidationMessage msg={this.state.msgErr.rentalDuration} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="rentalRate">Ratio alquiler</label>
+            <input
+              type="number"
+              className="form-control"
+              id="rentalRate"
+              name="rentalRate"
+              value={this.state.elemento.rentalRate}
+              onChange={this.handleChange}
+            />
+            <ValidationMessage msg={this.state.msgErr.rentalRate} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="replacementCost">Coste de reemplazo</label>
+            <input
+              type="number"
+              className="form-control"
+              id="replacementCost"
+              name="replacementCost"
+              value={this.state.elemento.replacementCost}
+              onChange={this.handleChange}
+            />
+            <ValidationMessage msg={this.state.msgErr.rentalRate} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="language">Idioma: </label>
+            <select
+              id="language"
+              name="language"
+              onChange={this.handleChange}
+              value={this.state.elemento.language}
+            >
+              {this.state.idiomas &&
+                this.state.idiomas.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.idioma}
+                  </option>
+                ))}
+            </select>
+            <ValidationMessage msg={this.state.msgErr.language} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="languageVO">Idioma VO: </label>
+            <select
+              id="languageVO"
+              name="languageVO"
+              onChange={this.handleChange}
+              value={
+                this.state.elemento.languageVO == null ||
+                this.state.elemento.languageVO === undefined ||
+                this.state.elemento.languageVO === []
+                  ? "No language"
+                  : this.state.elemento.languageVO
+              }
+            >
+              <option value={"No language"}>No language</option>
+              {this.state.idiomas &&
+                this.state.idiomas.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.idioma}
+                  </option>
+                ))}
+            </select>
+            <ValidationMessage msg={this.state.msgErr.languageVO} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="actors">Actores</label>
+            <Multiselect
+              options={this.state.actoresState} // Options to display in the dropdown
+              selectedValues={this.state.selectedValueActor} // Preselected value to persist in dropdown
+              onSelect={this.onSelect} // Function will trigger on select event
+              onRemove={this.onRemove} // Function will trigger on remove event
+              displayValue="nombre" // Property name to display in the dropdown options
+            />
+            <ValidationMessage msg={this.state.msgErr.actors} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="actors">Categories</label>
+
+            <br />
+            {/* {this.state.categoriesState &&
+                this.state.categoriesState.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.categoria}
+                  </option>
+                ))} */}
+            <Multiselect
+              options={this.state.categoriesState} // Options to display in the dropdown
+              selectedValues={this.state.selectedValueCategory} // Preselected value to persist in dropdown
+              onSelect={this.onSelect} // Function will trigger on select event
+              onRemove={this.onRemove} // Function will trigger on remove event
+              displayValue="categoria" // Property name to display in the dropdown options
+            />
+            <ValidationMessage msg={this.state.msgErr.categories} />
+          </div>
+          <div className="form-group mt-3">
+            <button
+              className="btn btn-primary"
+              type="button"
+              disabled={this.state.invalid}
+              onClick={this.onSend}
+            >
+              Enviar
+            </button>
+            <input
+              type="button"
+              className="btn btn-danger ml-2"
+              value="Borrar"
+              onClick={(e) => this.onDelete()}
+            />
+            <button
+              className="btn btn-primary ml-2"
+              type="button"
+              onClick={this.onCancel}
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
-
-  /*  loadActores(){
-
-  } */
+  onSelect = (selectedList, selectedItem) => {
+    const actorIds = selectedList.filter((item) => item.actorId).map((item) => item.actorId);
+    const categoriaIds = selectedList.filter((item) => item.id).map((item) => item.id);
+  
+    if (actorIds.length > 0) {
+      this.setState({
+        elemento: { ...this.state.elemento, actors: actorIds },
+        selectedValueActor: selectedList,
+      });
+    } else if (categoriaIds.length > 0) {
+      this.setState({
+        elemento: { ...this.state.elemento, categories: categoriaIds },
+        selectedValueCategory: selectedList,
+      });
+    }
+  };
+  
+  onRemove = (selectedList, selectedItem) => {
+    const actorIds = selectedList.filter((item) => item.actorId).map((item) => item.actorId);
+    const categoriaIds = selectedList.filter((item) => item.id).map((item) => item.id);
+  
+    if (actorIds.length > 0) {
+      this.setState({
+        elemento: { ...this.state.elemento, actors: actorIds },
+        selectedValueActor: selectedList,
+      });
+    } else if (categoriaIds.length > 0) {
+      this.setState({
+        elemento: { ...this.state.elemento, categories: categoriaIds },
+        selectedValueCategory: selectedList,
+      });
+    }
+  };
+  
 }
+
+export function MultiSelectActors({ elemento, actores }) {}
