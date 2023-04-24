@@ -9,3 +9,4 @@
 * __GuildedRose__ -> Refactoring Kata
 * __ms.eureka__ -> Netflix Eureka
 * __Fundamentos__ -> Ejemplos HTML, CSS y JS. 
+* __Catalogo-react__ -> Front-end del proyecto de Catálogo. 
